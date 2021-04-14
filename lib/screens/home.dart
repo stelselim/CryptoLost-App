@@ -8,8 +8,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CupertinoNavigationBar(
-        middle: Text("Here"),
+      appBar: AppBar(
+        title: Text("Title"),
       ),
       body: Center(
         child: TextButton(
