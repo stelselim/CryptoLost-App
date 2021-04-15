@@ -1,4 +1,4 @@
-import 'package:cryptolostapp/screens/home.dart';
+import 'package:cryptolostapp/presentation/screens/home.dart';
 import 'package:flutter/material.dart';
 
 void main() {
