@@ -1,18 +1,20 @@
 import 'package:cryptolostapp/application/models/coin.dart';
 import 'package:flutter/material.dart';
 
-List<DropdownMenuItem> coinsDropDown(List<CoinModel>? coinModel) {
-  if (coinModel == null) {
+List<DropdownMenuItem<CoinModel>>? coinsDropDown(List<CoinModel>? coinModels) {
+  List<DropdownMenuItem<CoinModel>> items = [];
+  if (coinModels == null) {
     return [];
   }
-  return coinModel
-      .map(
-        (e) => DropdownMenuItem(
-          value: e.id,
-          child: Text(
-            e.id,
-          ),
+  coinModels.forEach((element) {
+    if (element.id != null) {
+      items.add(DropdownMenuItem(
+        value: element,
+        child: Text(
+          element.symbol!.toUpperCase(),
         ),
-      )
-      .toList();
+      ));
+    }
+  });
+  return items;
 }

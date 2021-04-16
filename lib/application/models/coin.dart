@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 class CoinModel {
-  String id;
-  String symbol;
-  String name;
-  CoinImage image;
-  CoinMarketData market_data;
-  String last_updated;
+  String? id;
+  String? symbol;
+  String? name;
+  CoinImage? image;
+  CoinMarketData? market_data;
+  String? last_updated;
   CoinModel({
     required this.id,
     required this.symbol,
@@ -23,8 +23,8 @@ class CoinModel {
       'id': id,
       'symbol': symbol,
       'name': name,
-      'image': image.toMap(),
-      'market_data': market_data.toMap(),
+      'image': image?.toMap(),
+      'market_data': market_data?.toMap(),
       'last_updated': last_updated,
     };
   }
@@ -44,6 +44,24 @@ class CoinModel {
 
   factory CoinModel.fromJson(String source) =>
       CoinModel.fromMap(json.decode(source));
+
+  CoinModel copyWith({
+    String? id,
+    String? symbol,
+    String? name,
+    CoinImage? image,
+    CoinMarketData? market_data,
+    String? last_updated,
+  }) {
+    return CoinModel(
+      id: id ?? this.id,
+      symbol: symbol ?? this.symbol,
+      name: name ?? this.name,
+      image: image ?? this.image,
+      market_data: market_data ?? this.market_data,
+      last_updated: last_updated ?? this.last_updated,
+    );
+  }
 
   @override
   bool operator ==(Object other) {
@@ -67,17 +85,34 @@ class CoinModel {
         market_data.hashCode ^
         last_updated.hashCode;
   }
+
+  @override
+  String toString() {
+    return 'CoinModel(id: $id, symbol: $symbol, name: $name, image: $image, market_data: $market_data, last_updated: $last_updated)';
+  }
 }
 
 class CoinImage {
-  String thumb;
-  String small;
-  String large;
+  String? thumb;
+  String? small;
+  String? large;
   CoinImage({
     required this.thumb,
     required this.small,
     required this.large,
   });
+
+  CoinImage copyWith({
+    String? thumb,
+    String? small,
+    String? large,
+  }) {
+    return CoinImage(
+      thumb: thumb ?? this.thumb,
+      small: small ?? this.small,
+      large: large ?? this.large,
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -100,18 +135,6 @@ class CoinImage {
   factory CoinImage.fromJson(String source) =>
       CoinImage.fromMap(json.decode(source));
 
-  CoinImage copyWith({
-    String? thumb,
-    String? small,
-    String? large,
-  }) {
-    return CoinImage(
-      thumb: thumb ?? this.thumb,
-      small: small ?? this.small,
-      large: large ?? this.large,
-    );
-  }
-
   @override
   String toString() => 'CoinImage(thumb: $thumb, small: $small, large: $large)';
 
@@ -130,15 +153,15 @@ class CoinImage {
 }
 
 class CoinMarketData {
-  Map<String, num> current_price;
-  Map<String, num> market_cap;
-  int market_cap_rank;
-  num price_change_24h;
-  num price_change_percentage_24h;
-  num price_change_percentage_7d;
-  num price_change_percentage_30d;
-  num price_change_percentage_200d;
-  num market_cap_change_24h;
+  Map<String, num>? current_price;
+  Map<String, num>? market_cap;
+  int? market_cap_rank;
+  num? price_change_24h;
+  num? price_change_percentage_24h;
+  num? price_change_percentage_7d;
+  num? price_change_percentage_30d;
+  num? price_change_percentage_200d;
+  num? market_cap_change_24h;
   CoinMarketData({
     required this.current_price,
     required this.market_cap,
@@ -150,6 +173,35 @@ class CoinMarketData {
     required this.price_change_percentage_200d,
     required this.market_cap_change_24h,
   });
+
+  CoinMarketData copyWith({
+    Map<String, num>? current_price,
+    Map<String, num>? market_cap,
+    int? market_cap_rank,
+    num? price_change_24h,
+    num? price_change_percentage_24h,
+    num? price_change_percentage_7d,
+    num? price_change_percentage_30d,
+    num? price_change_percentage_200d,
+    num? market_cap_change_24h,
+  }) {
+    return CoinMarketData(
+      current_price: current_price ?? this.current_price,
+      market_cap: market_cap ?? this.market_cap,
+      market_cap_rank: market_cap_rank ?? this.market_cap_rank,
+      price_change_24h: price_change_24h ?? this.price_change_24h,
+      price_change_percentage_24h:
+          price_change_percentage_24h ?? this.price_change_percentage_24h,
+      price_change_percentage_7d:
+          price_change_percentage_7d ?? this.price_change_percentage_7d,
+      price_change_percentage_30d:
+          price_change_percentage_30d ?? this.price_change_percentage_30d,
+      price_change_percentage_200d:
+          price_change_percentage_200d ?? this.price_change_percentage_200d,
+      market_cap_change_24h:
+          market_cap_change_24h ?? this.market_cap_change_24h,
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -183,35 +235,6 @@ class CoinMarketData {
 
   factory CoinMarketData.fromJson(String source) =>
       CoinMarketData.fromMap(json.decode(source));
-
-  CoinMarketData copyWith({
-    Map<String, num>? current_price,
-    Map<String, num>? market_cap,
-    int? market_cap_rank,
-    num? price_change_24h,
-    num? price_change_percentage_24h,
-    num? price_change_percentage_7d,
-    num? price_change_percentage_30d,
-    num? price_change_percentage_200d,
-    num? market_cap_change_24h,
-  }) {
-    return CoinMarketData(
-      current_price: current_price ?? this.current_price,
-      market_cap: market_cap ?? this.market_cap,
-      market_cap_rank: market_cap_rank ?? this.market_cap_rank,
-      price_change_24h: price_change_24h ?? this.price_change_24h,
-      price_change_percentage_24h:
-          price_change_percentage_24h ?? this.price_change_percentage_24h,
-      price_change_percentage_7d:
-          price_change_percentage_7d ?? this.price_change_percentage_7d,
-      price_change_percentage_30d:
-          price_change_percentage_30d ?? this.price_change_percentage_30d,
-      price_change_percentage_200d:
-          price_change_percentage_200d ?? this.price_change_percentage_200d,
-      market_cap_change_24h:
-          market_cap_change_24h ?? this.market_cap_change_24h,
-    );
-  }
 
   @override
   String toString() {
