@@ -1,3 +1,4 @@
+import 'package:cryptolostapp/presentation/App.dart';
 import 'package:cryptolostapp/presentation/screens/home.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeScreen(),
+      home: AppWidget(),
     );
   }
 }
