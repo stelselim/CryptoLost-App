@@ -1,7 +1,9 @@
 import 'package:cryptolostapp/application/models/coin.dart';
+import 'package:cryptolostapp/application/provider/appstate.dart';
 import 'package:cryptolostapp/infrastructure/coins.dart';
 import 'package:cryptolostapp/presentation/widgets/coin_comparison.dart';
 import 'package:cryptolostapp/presentation/widgets/coins_dropdown_item.dart';
+import 'package:cryptolostapp/utility/date_picker.dart';
 
 import 'package:cryptolostapp/utility/screensizes.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -19,34 +22,26 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   CoinModel? selectedCoin; // Selected Value for Dropdown
-  DateTime? selectedDate; // Selected Date
+  DateTime? selectedDate; // Selected Date for Calculation
+  final amountTextController =
+      TextEditingController(); // Amount TextField Controller
+  final FocusNode amountNode = FocusNode(); // Amount Keyboard Node
 
   CoinModel? historyOfCoin; // Resulted Value
   CoinModel? currentResultCoin; // Resulted Value
   DateTime? historyOfDate; // Resulted Date
   num? resultCoinAmount; // Result Amount
 
-  List<CoinModel>? values;
-  final amountTextController = TextEditingController();
-  final FocusNode amountNode = FocusNode();
+  List<CoinModel>? coins; // Coins from API
+  final CoinDataRepository coinDataRepository =
+      CoinDataRepository(); // Coins Data Repository
 
-  final CoinDataRepository coinDataRepository = CoinDataRepository();
-
-  Future getData() async {
+  Future getData(BuildContext context) async {
     var res = await coinDataRepository.getCoins();
+    Provider.of<AppState>(context, listen: false).setCoins(res);
     setState(() {
-      values = res;
+      coins = res;
     });
-  }
-
-  Future<DateTime?> pickDate() async {
-    final res = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now().subtract(Duration(days: 1)),
-      firstDate: DateTime(2015),
-      lastDate: DateTime.now().subtract(Duration(days: 1)),
-    );
-    return res;
   }
 
   @override
@@ -57,12 +52,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    getData();
+    getData(context);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final headertextStyle = TextStyle(
+      color: Colors.blueGrey.shade700,
+      fontWeight: FontWeight.w600,
+      fontSize: 17,
+    );
     return GestureDetector(
       onTap: () {
         amountNode.unfocus();
@@ -71,9 +71,24 @@ class _HomeScreenState extends State<HomeScreen> {
         color: Colors.transparent,
         child: Column(
           children: [
-            // INPUT
-            if (values == null)
-              CircularProgressIndicator()
+            Padding(
+              padding: const EdgeInsets.only(top: 23.0, left: 18),
+              child: Row(
+                children: [
+                  Text(
+                    "Enter your cripto from PAST!",
+                    style: headertextStyle,
+                  ),
+                ],
+              ),
+            ),
+            // INPUT Loading
+            if (coins == null)
+              Padding(
+                padding: const EdgeInsets.all(25.0),
+                child: CircularProgressIndicator(),
+              )
+            // COINS Loaded
             else
               Expanded(
                 flex: 2,
@@ -87,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     borderRadius: BorderRadius.circular(25),
                   ),
                   padding: EdgeInsets.symmetric(
-                    vertical: getSize(context).height * 0.025,
+                    vertical: getSize(context).height * 0.014,
                     horizontal: getSize(context).width * 0.06,
                   ),
                   child: Row(
@@ -109,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             }
                           },
                           value: selectedCoin,
-                          items: coinsDropDown(values),
+                          items: coinsDropDown(coins),
                         ),
                       ),
                       // TextField
@@ -152,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         onPressed: () async {
                           try {
-                            selectedDate = await pickDate();
+                            selectedDate = await pickDate(context);
                             setState(() {});
                           } catch (e) {
                             print(e);
@@ -184,7 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Text("Select Date"),
                       onPressed: () async {
                         try {
-                          selectedDate = await pickDate();
+                          selectedDate = await pickDate(context);
 
                           setState(() {});
                         } catch (e) {
@@ -256,20 +271,31 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
 
             Expanded(
-              flex: 8,
-              child: Container(
-                child: (currentResultCoin != null &&
-                        historyOfCoin != null &&
-                        historyOfDate != null)
-                    ? CoinComparisonList(
-                        historyDate: historyOfDate,
-                        coinAmount: resultCoinAmount,
-                        currentCoin: currentResultCoin,
-                        historyOfCoin: historyOfCoin,
-                      )
-                    : Container(
-                        child: Text("Calculate a loss :)"),
-                      ),
+              flex: 7,
+              child: SingleChildScrollView(
+                physics: ClampingScrollPhysics(),
+                child: Column(
+                  children: [
+                    Container(
+                      child: (currentResultCoin != null &&
+                              historyOfCoin != null &&
+                              historyOfDate != null)
+                          ? CoinComparisonList(
+                              historyDate: historyOfDate,
+                              coinAmount: resultCoinAmount,
+                              currentCoin: currentResultCoin,
+                              historyOfCoin: historyOfCoin,
+                            )
+                          : Container(
+                              padding: EdgeInsets.all(35),
+                              child: Text(
+                                "Calculate a LOSS :)",
+                                style: headertextStyle,
+                              ),
+                            ),
+                    ),
+                  ],
+                ),
               ),
             )
           ],

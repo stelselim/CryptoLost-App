@@ -1,15 +1,16 @@
+import 'dart:io';
+
+import 'package:cryptolostapp/application/provider/appstate.dart';
 import 'package:cryptolostapp/presentation/screens/home.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class AppWidget extends StatefulWidget {
-  @override
-  _AppWidgetState createState() => _AppWidgetState();
-}
+class AppWidget extends StatelessWidget {
+  const AppWidget({Key? key}) : super(key: key);
 
-class _AppWidgetState extends State<AppWidget> {
-  int currentIndex = 0;
-
-  Widget homeBody(int index) {
+  static Widget homeBody(BuildContext context) {
+    int index = Provider.of<AppState>(context).index;
     if (index == 0) {
       return HomeScreen();
     }
@@ -23,28 +24,38 @@ class _AppWidgetState extends State<AppWidget> {
     );
   }
 
+  static PreferredSizeWidget appBarWidget() {
+    if (Platform.isAndroid) {
+      return AppBar(
+        title: Text("Coin Loss & Gain Calculator"),
+      );
+    } else {
+      return CupertinoNavigationBar(
+        middle: Text("Coin Loss & Gain Calculator"),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    var currentIndex = Provider.of<AppState>(context, listen: false).index;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: Text("Coin Loss & Gain Calculator"),
-      ),
-      body: homeBody(currentIndex),
+      appBar: appBarWidget(),
+      body: homeBody(context),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: (val) {
-          setState(() {
-            currentIndex = val;
-          });
+          Provider.of<AppState>(context, listen: false).updateIndex(val);
         },
         items: [
           BottomNavigationBarItem(
-            label: "Loss",
+            label: "Gain / Loss",
             icon: Icon(Icons.format_indent_decrease),
           ),
           BottomNavigationBarItem(
-            label: "Save",
+            label: "Saved",
             icon: Icon(Icons.bar_chart),
           ),
         ],

@@ -55,37 +55,76 @@ class CoinComparisonList extends StatelessWidget {
     }
   }
 
+  Widget profitWidget() {
+    var _history = historyOfCoin!.market_data!.current_price!["usd"]!;
+    var _current = currentCoin!.market_data!.current_price!["usd"]!;
+
+    if (_history < _current) {
+      var profit = (_current - _history).toStringAsFixed(2);
+
+      return Column(
+        children: [
+          Text(
+            "Your Profit is $profit USD",
+            textScaleFactor: 1.5,
+            style: TextStyle(fontWeight: FontWeight.w600),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      );
+    } else {
+      var loss = (_current - _history).abs().toStringAsFixed(2);
+      return Column(
+        children: [
+          Text(
+            "Your Loss is $loss USD",
+            textScaleFactor: 1.5,
+            style: TextStyle(fontWeight: FontWeight.w600),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      );
+    }
+  }
+
+  Future saveTheCalculations() async {
+    try {
+      print("hEllo");
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final currentMoney =
-        (currentCoin!.market_data!.current_price!["usd"]! * coinAmount!)
-            .toStringAsFixed(2);
-    final historyMoney =
-        (historyOfCoin!.market_data!.current_price!["usd"]! * coinAmount!)
-            .toStringAsFixed(2);
+    var historyMoney = NumberFormat.currency(name: "").format(
+        historyOfCoin!.market_data!.current_price!["usd"]! * coinAmount!);
+
+    var currentMoney = NumberFormat.currency(name: "")
+        .format(currentCoin!.market_data!.current_price!["usd"]! * coinAmount!);
 
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: ElevatedButton(
+                  onPressed: () => saveTheCalculations(),
+                  child: Text(
+                    "Save This!",
+                    textScaleFactor: 1.25,
+                  ),
+                ),
+              ),
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.all(15.0),
-            child: Text(
-              "Now 1 ${currentCoin!.name} is ${currentCoin!.market_data!.current_price!["usd"]}",
-              textScaleFactor: 1.5,
-              style: TextStyle(fontWeight: FontWeight.w600),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          ListTile(
-            leading: Image.network(currentCoin!.image!.thumb!),
-            subtitle: Text(
-                "Now - " + DateFormat('MM-dd-yyyy').format(DateTime.now())),
-            title: Text(currentCoin!.name!),
-            trailing: Text(
-              currentCoin!.market_data!.current_price!["usd"]!
-                  .toStringAsFixed(2),
-            ),
+            child: profitWidget(),
           ),
           ListTile(
             leading: Image.network(historyOfCoin!.image!.thumb!),
@@ -97,14 +136,24 @@ class CoinComparisonList extends StatelessWidget {
                   .toStringAsFixed(2),
             ),
           ),
+          ListTile(
+            leading: Image.network(currentCoin!.image!.thumb!),
+            subtitle: Text(
+                "Today - " + DateFormat('MM-dd-yyyy').format(DateTime.now())),
+            title: Text(currentCoin!.name!),
+            trailing: Text(
+              currentCoin!.market_data!.current_price!["usd"]!
+                  .toStringAsFixed(2),
+            ),
+          ),
           SizedBox(
             height: 15,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              "Your Money was $historyMoney",
-              textScaleFactor: 1.75,
+              "Your money was $historyMoney USD",
+              textScaleFactor: 1.5,
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 color: Colors.red,
@@ -118,8 +167,8 @@ class CoinComparisonList extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              "Your Money is $currentMoney",
-              textScaleFactor: 1.75,
+              "Your money is $currentMoney USD",
+              textScaleFactor: 1.5,
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 color: Colors.blue,
