@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.stel.cryptolostapp">
    <application
-        android:label="cryptolostapp"
+        android:label="Crypto Coin Calcuator"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
