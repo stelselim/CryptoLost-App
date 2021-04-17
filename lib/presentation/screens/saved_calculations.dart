@@ -1,5 +1,6 @@
 import 'package:cryptolostapp/application/models/calculations.dart';
 import 'package:cryptolostapp/presentation/widgets/saved_calculations_widget.dart';
+import 'package:cryptolostapp/presentation/widgets/total_calculations_widget.dart';
 import 'package:cryptolostapp/utility/save_calculation.dart';
 import 'package:flutter/material.dart';
 
@@ -23,16 +24,38 @@ class SavedCalculationsScreen extends StatelessWidget {
                   if (snapshot.data!.length == 0)
                     return Center(child: Text("There is No Saved Data"));
 
-                  return ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      return SavedCalculationWidget(
-                        context: context,
-                        index: index,
-                        setState: setStateFromBuilder,
-                        localcalculation: snapshot.data!.elementAt(index),
-                      );
-                    },
+                  return Column(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                color: Colors.blueGrey,
+                                child: TotalCalculations(
+                                  calculations: snapshot.data,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 7,
+                        child: ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            return SavedCalculationWidget(
+                              context: context,
+                              index: index,
+                              setState: setStateFromBuilder,
+                              localcalculation: snapshot.data!.elementAt(index),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   );
                 }),
       ),

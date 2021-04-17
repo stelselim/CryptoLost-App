@@ -22,7 +22,7 @@ class SavedCalculationWidget extends StatelessWidget {
 
   static const trailingTextStyle = TextStyle(
     fontWeight: FontWeight.w600,
-    fontSize: 20,
+    fontSize: 18,
     color: Colors.red,
   );
 
@@ -46,14 +46,16 @@ class SavedCalculationWidget extends StatelessWidget {
   }
 
   Widget trailingWidget() {
+    String profit =
+        NumberFormat.currency(name: "").format(localcalculation!.profit);
     if (localcalculation!.isLoss) {
       return Text(
-        "- %" + localcalculation!.percentage.toStringAsFixed(2),
+        "\$$profit" + " - %" + localcalculation!.percentage.toStringAsFixed(2),
         style: trailingTextStyle,
       );
     } else {
       return Text(
-        "%" + localcalculation!.percentage.toStringAsFixed(2),
+        "\$$profit" + " %" + localcalculation!.percentage.toStringAsFixed(2),
         style: trailingTextStyle.copyWith(color: Colors.green),
       );
     }
