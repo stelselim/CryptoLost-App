@@ -63,7 +63,7 @@ class CoinComparisonList extends StatelessWidget {
     var _current = currentCoin!.market_data!.current_price!["usd"]!;
 
     if (_history < _current) {
-      var profit = (_current - _history).toStringAsFixed(2);
+      var profit = ((_current - _history) * coinAmount!).toStringAsFixed(2);
 
       return Column(
         children: [
@@ -76,7 +76,7 @@ class CoinComparisonList extends StatelessWidget {
         ],
       );
     } else {
-      var loss = (_current - _history).abs().toStringAsFixed(2);
+      var loss = ((_current - _history) * coinAmount!).abs().toStringAsFixed(2);
       return Column(
         children: [
           Text(
@@ -153,7 +153,9 @@ class CoinComparisonList extends StatelessWidget {
                         percentage: ratio,
                       ),
                     );
-                  } catch (e) {}
+                  } catch (e) {
+                    print(e);
+                  }
                 },
               ),
               SizedBox(
