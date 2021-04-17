@@ -7,24 +7,32 @@ const calculationKey = "CALCULATIONS";
 
 Future<List<Calculation>> getCalculations() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  // await prefs.clear();
   var local = prefs.getString(calculationKey);
   if (local == null) return [];
-  List<Map<String, dynamic>> tempList = jsonDecode(local);
+  List<dynamic> tempList = jsonDecode(local);
   final calculations = List.generate(
     tempList.length,
-    (index) => Calculation.fromMap(tempList.elementAt(index)),
+    (index) => Calculation.fromJson(tempList.elementAt(index)),
   );
   return calculations;
 }
 
-Future saveNewCalculation(Calculation calculationValue) async {
+Future<void> saveNewCalculation(Calculation calculationValue) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var calculations = await getCalculations();
   calculations.add(calculationValue);
   await prefs.setString(calculationKey, jsonEncode(calculations));
 }
 
-Future clearCalculations() async {
+Future<void> deleteCalculation(int index) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var calculations = await getCalculations();
+  calculations.removeAt(index);
+  await prefs.setString(calculationKey, jsonEncode(calculations));
+}
+
+Future<void> clearCalculations() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.remove(calculationKey);
 }

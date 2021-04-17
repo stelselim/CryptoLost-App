@@ -1,4 +1,7 @@
+import 'package:cryptolostapp/application/models/calculations.dart';
 import 'package:cryptolostapp/application/models/coin.dart';
+import 'package:cryptolostapp/utility/save_calculation.dart';
+import 'package:cryptolostapp/utility/share_calculation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -89,7 +92,18 @@ class CoinComparisonList extends StatelessWidget {
 
   Future saveTheCalculations() async {
     try {
-      print("hEllo");
+      var _history = historyOfCoin!.market_data!.current_price!["usd"]!;
+      var _current = currentCoin!.market_data!.current_price!["usd"]!;
+      var _ratio = 100 * (_current - _history) / _history;
+
+      var toSaveCalculation = Calculation(
+        coinModel: currentCoin!,
+        dateTime: DateTime.now(),
+        isLoss: _history > _current ? true : false,
+        profit: (_history - _current).abs(),
+        percentage: _ratio.abs(),
+      );
+      await saveNewCalculation(toSaveCalculation);
     } catch (e) {
       print(e);
     }
@@ -97,10 +111,18 @@ class CoinComparisonList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var historyMoney = NumberFormat.currency(name: "").format(
+    var history = historyOfCoin!.market_data!.current_price!["usd"]!;
+    var current = currentCoin!.market_data!.current_price!["usd"]!;
+    var ratio = 100 * (current - history) / history;
+
+    var profit = (currentCoin!.market_data!.current_price!["usd"]! -
+            currentCoin!.market_data!.current_price!["usd"]!)
+        .abs();
+
+    String historyMoney = NumberFormat.currency(name: "").format(
         historyOfCoin!.market_data!.current_price!["usd"]! * coinAmount!);
 
-    var currentMoney = NumberFormat.currency(name: "")
+    String currentMoney = NumberFormat.currency(name: "")
         .format(currentCoin!.market_data!.current_price!["usd"]! * coinAmount!);
 
     return Container(
@@ -110,6 +132,33 @@ class CoinComparisonList extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              IconButton(
+                icon: Icon(
+                  Icons.share,
+                  color: Colors.indigo,
+                  size: 32,
+                ),
+                onPressed: () async {
+                  try {
+                    await shareCalculation(
+                      Calculation(
+                        coinModel: currentCoin!,
+                        dateTime: DateTime.now(),
+                        isLoss: historyOfCoin!
+                                    .market_data!.current_price!["usd"]! >
+                                currentCoin!.market_data!.current_price!["usd"]!
+                            ? true
+                            : false,
+                        profit: profit,
+                        percentage: ratio,
+                      ),
+                    );
+                  } catch (e) {}
+                },
+              ),
+              SizedBox(
+                width: 8,
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: ElevatedButton(
