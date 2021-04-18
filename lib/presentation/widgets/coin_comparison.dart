@@ -1,5 +1,6 @@
 import 'package:cryptolostapp/application/models/calculations.dart';
 import 'package:cryptolostapp/application/models/coin.dart';
+import 'package:cryptolostapp/utility/analytics/google_anayltics_functions.dart';
 import 'package:cryptolostapp/utility/save_calculation.dart';
 import 'package:cryptolostapp/utility/share_calculation.dart';
 import 'package:flutter/material.dart';
@@ -104,6 +105,7 @@ class CoinComparisonList extends StatelessWidget {
         percentage: _ratio.abs(),
       );
       await saveNewCalculation(toSaveCalculation);
+      await savedCalculationEvent();
     } catch (e) {
       print(e);
     }

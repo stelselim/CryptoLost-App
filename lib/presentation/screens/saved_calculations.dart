@@ -43,16 +43,67 @@ class SavedCalculationsScreen extends StatelessWidget {
                       ),
                       Expanded(
                         flex: 7,
-                        child: ListView.builder(
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, index) {
-                            return SavedCalculationWidget(
-                              context: context,
-                              index: index,
-                              setState: setStateFromBuilder,
-                              localcalculation: snapshot.data!.elementAt(index),
-                            );
-                          },
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 18.0),
+                                  child: ElevatedButton(
+                                    onPressed: () async {
+                                      AlertDialog alert = AlertDialog(
+                                        title: Text("Delete All Calculations"),
+                                        content: Text(
+                                            "Calculations can not recovered."),
+                                        actions: [
+                                          TextButton(
+                                            child: Text("No"),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: Text("Yes"),
+                                            onPressed: () async {
+                                              try {
+                                                await clearCalculations();
+                                                Navigator.pop(context);
+                                                setStateFromBuilder(() {});
+                                              } catch (e) {
+                                                print(e);
+                                              }
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return alert;
+                                        },
+                                      );
+                                    },
+                                    child: Text("Delete All"),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (context, index) {
+                                  return SavedCalculationWidget(
+                                    context: context,
+                                    index: index,
+                                    setState: setStateFromBuilder,
+                                    localcalculation:
+                                        snapshot.data!.elementAt(index),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],

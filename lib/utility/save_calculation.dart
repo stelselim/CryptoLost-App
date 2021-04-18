@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:cryptolostapp/application/models/calculations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

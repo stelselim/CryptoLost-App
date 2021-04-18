@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:cryptolostapp/application/provider/appstate.dart';
 import 'package:cryptolostapp/presentation/screens/home.dart';
 import 'package:cryptolostapp/presentation/screens/saved_calculations.dart';
+import 'package:cryptolostapp/utility/analytics/google_anayltics_functions.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -38,6 +40,11 @@ class AppWidget extends StatelessWidget {
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: appstate.index,
           onTap: (val) {
+            if (val == 0) {
+              homeScreenEvent();
+            } else if (val == 1) {
+              savedScreenEvent();
+            }
             Provider.of<AppState>(context, listen: false).updateIndex(val);
           },
           items: [

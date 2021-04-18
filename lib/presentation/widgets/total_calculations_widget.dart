@@ -27,12 +27,14 @@ class TotalCalculations extends StatelessWidget {
       ),
       padding: EdgeInsets.all(8),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
+            alignment: Alignment.center,
             width: MediaQuery.of(context).size.width * 0.6,
             child: Text(
               totalMoney > 0 ? "Total Profit: $total" : "Total Loss: $total",
-              textScaleFactor: 2.25,
+              textScaleFactor: 2.0,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.w700,

@@ -3,6 +3,7 @@ import 'package:cryptolostapp/application/provider/appstate.dart';
 import 'package:cryptolostapp/infrastructure/coins.dart';
 import 'package:cryptolostapp/presentation/widgets/coin_comparison.dart';
 import 'package:cryptolostapp/presentation/widgets/coins_dropdown_item.dart';
+import 'package:cryptolostapp/utility/analytics/google_anayltics_functions.dart';
 import 'package:cryptolostapp/utility/date_picker.dart';
 
 import 'package:cryptolostapp/utility/screensizes.dart';
@@ -70,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.transparent,
           child: Column(
             children: [
+              // Text
               Padding(
                 padding: const EdgeInsets.only(top: 23.0, left: 18),
                 child: Row(
@@ -90,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
               // COINS Loaded
               else
                 Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: Container(
                     margin: EdgeInsets.symmetric(
                       vertical: getSize(context).height * 0.025,
@@ -154,9 +156,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
+
               // Date Select
               Expanded(
-                flex: 1,
+                flex: 2,
                 child: selectedDate != null
                     ? ListTile(
                         leading: IconButton(
@@ -184,14 +187,24 @@ class _HomeScreenState extends State<HomeScreen> {
                             });
                           },
                         ),
-                        title: Text(
-                          DateFormat('MM-dd-yyyy').format(selectedDate!),
-                          textScaleFactor: 1.25,
-                          style: TextStyle(
-                            color: Colors.blueGrey.shade600,
-                            fontWeight: FontWeight.w700,
+                        title: TextButton(
+                          onPressed: () async {
+                            try {
+                              selectedDate = await pickDate(context);
+                              setState(() {});
+                            } catch (e) {
+                              print(e);
+                            }
+                          },
+                          child: Text(
+                            DateFormat('MM-dd-yyyy').format(selectedDate!),
+                            textScaleFactor: 1.25,
+                            style: TextStyle(
+                              color: Colors.blueGrey.shade600,
+                              fontWeight: FontWeight.w700,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
                         ),
                       )
                     : CupertinoButton(
@@ -207,12 +220,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                       ),
               ),
+              // Space
               SizedBox(
                 height: 10,
               ),
               // Calculate Button
               Expanded(
-                flex: 1,
+                flex: 2,
                 child: Container(
                   child: ElevatedButton(
                     style: ButtonStyle(
@@ -227,6 +241,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     onPressed: () async {
                       amountNode.unfocus();
+                      await calculateEvent();
 
                       if (amountTextController.text == "") {
                         Fluttertoast.showToast(msg: "Please enter amount");
@@ -264,13 +279,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
+
+              // Divider
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
                 child: Divider(),
               ),
 
+              // Coin Comparison
               Expanded(
-                flex: 7,
+                flex: 10,
                 child: SingleChildScrollView(
                   physics: ClampingScrollPhysics(),
                   child: Column(

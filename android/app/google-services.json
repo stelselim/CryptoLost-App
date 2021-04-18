@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1060734310978",
+    "project_id": "crypto-loss-gain-app",
+    "storage_bucket": "crypto-loss-gain-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1060734310978:android:950853745814e715aa2bdb",
+        "android_client_info": {
+          "package_name": "com.stel.cryptolostapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1060734310978-hut7cs06puul2bc4foqp2ha8rp42mq68.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.stel.cryptolostapp",
+            "certificate_hash": "62aeaf185aa24c392e5942f9f5ad36e7f3418f58"
+          }
+        },
+        {
+          "client_id": "1060734310978-fb433rt3if1v4o6rit4jbg8coc45msnm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCCHBiCF8TnWLVP1xJJQ3asPKfyhx3W24"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1060734310978-fb433rt3if1v4o6rit4jbg8coc45msnm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1060734310978-8ivsc3l9u986rjss6vit2s22nnjgpu93.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "om.stel.cryptolostapp",
+                "app_store_id": "1563553737"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
