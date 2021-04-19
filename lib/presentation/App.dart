@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cryptolostapp/application/provider/appstate.dart';
 import 'package:cryptolostapp/presentation/screens/home.dart';
 import 'package:cryptolostapp/presentation/screens/saved_calculations.dart';
+import 'package:cryptolostapp/presentation/screens/selected_date_screen.dart';
 import 'package:cryptolostapp/utility/analytics/google_anayltics_functions.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -34,6 +35,7 @@ class AppWidget extends StatelessWidget {
           index: appstate.index,
           children: [
             HomeScreen(),
+            SelectedDateCoinScreen(),
             SavedCalculationsScreen(),
           ],
         ),
@@ -42,7 +44,7 @@ class AppWidget extends StatelessWidget {
           onTap: (val) {
             if (val == 0) {
               homeScreenEvent();
-            } else if (val == 1) {
+            } else if (val == 2) {
               savedScreenEvent();
             }
             Provider.of<AppState>(context, listen: false).updateIndex(val);
@@ -51,6 +53,10 @@ class AppWidget extends StatelessWidget {
             BottomNavigationBarItem(
               label: "Gain / Loss",
               icon: Icon(Icons.format_indent_decrease),
+            ),
+            BottomNavigationBarItem(
+              label: "Coins",
+              icon: Icon(Icons.list_alt),
             ),
             BottomNavigationBarItem(
               label: "Saved",
