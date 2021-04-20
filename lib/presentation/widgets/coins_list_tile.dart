@@ -20,7 +20,7 @@ class CoinsListTile extends StatelessWidget {
     return Container(
       child: ListTile(
         onTap: () {
-          var dialog = coinsDetailsDialog(coinModel);
+          var dialog = coinsDetailsDialog(context, coinModel);
           showDialog(context: context, builder: (context) => dialog);
         },
         leading: Image.network(coinModel!.image!.thumb!),
