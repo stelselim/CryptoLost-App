@@ -44,6 +44,8 @@ class AppWidget extends StatelessWidget {
           onTap: (val) {
             if (val == 0) {
               homeScreenEvent();
+            } else if (val == 1) {
+              coinsScreenEvent();
             } else if (val == 2) {
               savedScreenEvent();
             }

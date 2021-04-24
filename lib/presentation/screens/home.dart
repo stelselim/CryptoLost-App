@@ -3,6 +3,7 @@ import 'package:cryptolostapp/application/provider/appstate.dart';
 import 'package:cryptolostapp/infrastructure/coins.dart';
 import 'package:cryptolostapp/presentation/widgets/coin_comparison.dart';
 import 'package:cryptolostapp/presentation/widgets/coins_dropdown_item.dart';
+import 'package:cryptolostapp/utility/admob/admob_interstitial.dart';
 import 'package:cryptolostapp/utility/analytics/google_anayltics_functions.dart';
 import 'package:cryptolostapp/utility/date_picker.dart';
 
@@ -61,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
       color: Colors.blueGrey.shade700,
       fontWeight: FontWeight.w600,
       fontSize: 17,
+      height: 1.35,
     );
     return Consumer<AppState>(
       builder: (context, appstate, _) => GestureDetector(
@@ -74,10 +76,10 @@ class _HomeScreenState extends State<HomeScreen> {
               // Text
               Padding(
                 padding: const EdgeInsets.only(top: 23.0, left: 18),
-                child: Row(
+                child: Wrap(
                   children: [
                     Text(
-                      "Enter your cripto from PAST!",
+                      "Enter your cripto from PAST, and compare CURRENT value!",
                       style: headertextStyle,
                     ),
                   ],
@@ -263,6 +265,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             selectedCoin!.id!,
                             selectedDate!,
                           );
+                          Fluttertoast.showToast(msg: "Calculated!");
                           setState(() {
                             currentResultCoin = selectedCoin!.copyWith();
                             historyOfCoin = coinResultLocal!.copyWith();
@@ -270,6 +273,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             resultCoinAmount =
                                 num.parse(amountTextController.text);
                           });
+                          await showIntertitial();
                         } catch (e) {
                           print(e);
                           Fluttertoast.showToast(msg: "Error Occured");

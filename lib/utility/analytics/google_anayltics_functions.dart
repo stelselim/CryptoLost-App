@@ -22,6 +22,17 @@ Future homeScreenEvent() async {
   }
 }
 
+Future coinsScreenEvent() async {
+  try {
+    final FirebaseAnalytics analytics = FirebaseAnalytics();
+    await analytics.logEvent(
+      name: events.COINSSCREEN_OPENED_EVENT,
+    );
+  } catch (e) {
+    print(e);
+  }
+}
+
 Future savedScreenEvent() async {
   try {
     final FirebaseAnalytics analytics = FirebaseAnalytics();
@@ -49,6 +60,17 @@ Future calculateEvent() async {
     final FirebaseAnalytics analytics = FirebaseAnalytics();
     await analytics.logEvent(
       name: events.CRYPTO_CALCULATION_EVENT,
+    );
+  } catch (e) {
+    print(e);
+  }
+}
+
+Future coinsDetailOpenedEvent() async {
+  try {
+    final FirebaseAnalytics analytics = FirebaseAnalytics();
+    await analytics.logEvent(
+      name: events.COIN_DETAILS_TAPPED_EVENT,
     );
   } catch (e) {
     print(e);

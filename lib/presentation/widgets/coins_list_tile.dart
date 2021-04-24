@@ -1,5 +1,6 @@
 import 'package:cryptolostapp/application/models/coin.dart';
 import 'package:cryptolostapp/presentation/widgets/dialog/coins_detail_dialog.dart';
+import 'package:cryptolostapp/utility/analytics/google_anayltics_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -19,9 +20,12 @@ class CoinsListTile extends StatelessWidget {
     }
     return Container(
       child: ListTile(
-        onTap: () {
-          var dialog = coinsDetailsDialog(context, coinModel);
-          showDialog(context: context, builder: (context) => dialog);
+        onTap: () async {
+          try {
+            var dialog = coinsDetailsDialog(context, coinModel);
+            await coinsDetailOpenedEvent();
+            showDialog(context: context, builder: (context) => dialog);
+          } catch (e) {}
         },
         leading: Image.network(coinModel!.image!.thumb!),
         subtitle: Text(formattedDate),

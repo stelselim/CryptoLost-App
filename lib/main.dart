@@ -1,5 +1,6 @@
 import 'package:cryptolostapp/application/provider/appstate.dart';
 import 'package:cryptolostapp/presentation/App.dart';
+import 'package:cryptolostapp/utility/admob/admob_initialize.dart';
 import 'package:cryptolostapp/utility/analytics/google_anayltics_functions.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,8 @@ import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  // Initiliaze Admob
+  initializeAdmob();
 
   runApp(App());
 }
