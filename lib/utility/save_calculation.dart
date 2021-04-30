@@ -48,7 +48,6 @@ Future<List<Calculation>> updateCalculationsFromOld(
   List<Calculation> calculationList = [];
   for (String e in list) {
     Map<String, dynamic> x = jsonDecode(e);
-    print(x.keys);
 
     if (x.containsKey("dateTime")) {
       var local = Calculation(
@@ -59,11 +58,9 @@ Future<List<Calculation>> updateCalculationsFromOld(
         percentage: x["percentage"],
         oldDateTime: DateTime.fromMillisecondsSinceEpoch(x["dateTime"]),
       );
-      print("TO Update");
       calculationList.add(local);
     } else {
       var local = Calculation.fromMap(x);
-      print("TO Good");
       calculationList.add(local);
     }
   }

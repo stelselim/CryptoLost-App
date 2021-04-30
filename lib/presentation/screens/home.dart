@@ -3,6 +3,7 @@ import 'package:cryptolostapp/application/provider/appstate.dart';
 import 'package:cryptolostapp/infrastructure/coins.dart';
 import 'package:cryptolostapp/presentation/widgets/coin_comparison.dart';
 import 'package:cryptolostapp/presentation/widgets/coins_dropdown_item.dart';
+import 'package:cryptolostapp/utility/admob/admob_config.dart';
 import 'package:cryptolostapp/utility/admob/admob_interstitial.dart';
 import 'package:cryptolostapp/utility/analytics/google_anayltics_functions.dart';
 import 'package:cryptolostapp/utility/date_picker.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -34,6 +36,23 @@ class _HomeScreenState extends State<HomeScreen> {
   DateTime? historyOfDate; // Resulted Date
   num? resultCoinAmount; // Result Amount
 
+// Show ad with setState
+  showAdFunction() {
+    setState(() {
+      showAd = true;
+    });
+  }
+
+// Hide ad with setState
+  hideAdFunction() {
+    setState(() {
+      showAd = false;
+    });
+  }
+
+  InterstitialAd? interstitialAd;
+  bool showAd = false;
+
   final CoinDataRepository coinDataRepository =
       CoinDataRepository(); // Coins Data Repository
 
@@ -47,17 +66,54 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     amountTextController.dispose();
+    interstitialAd!.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     getData(context);
+
+// ad Listener
+    final AdListener adListener = AdListener(
+      // Called when an ad is successfully received.
+      onAdLoaded: (Ad ad) {
+        print("Show Ad");
+        // Fluttertoast.showToast(msg: "SHOW AD", gravity: ToastGravity.CENTER);
+        showAdFunction();
+      },
+      // Called when an ad request failed.
+      onAdFailedToLoad: (Ad ad, LoadAdError error) {
+        ad.dispose();
+        // Fluttertoast.showToast(msg: "FAILED + $error");
+        print('Ad failed to load: $error');
+      },
+      // Called when an ad opens an overlay that covers the screen.
+      onAdOpened: (Ad ad) => print('Ad opened.'),
+      // Called when an ad removes an overlay that covers the screen.
+      onAdClosed: (Ad ad) {
+        ad.dispose();
+        hideAdFunction();
+      },
+      // Called when an ad is in the process of leaving the application.
+      onApplicationExit: (Ad ad) => print('Left application.'),
+    );
+
+    interstitialAd = InterstitialAd(
+      adUnitId: interstitialAdUnitId,
+      listener: adListener,
+      request: AdRequest(),
+    );
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (showAd && interstitialAd != null) {
+      interstitialAd!.show();
+    }
+
     final headertextStyle = TextStyle(
       color: Colors.blueGrey.shade700,
       fontWeight: FontWeight.w600,
@@ -273,7 +329,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             resultCoinAmount =
                                 num.parse(amountTextController.text);
                           });
-                          await showIntertitial();
+                          if (interstitialAd != null) {
+                            await loadInterstitial(interstitialAd!);
+                          }
                         } catch (e) {
                           print(e);
                           Fluttertoast.showToast(msg: "Error Occured");
