@@ -310,7 +310,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             : Container(
                                 padding: EdgeInsets.all(35),
                                 child: Text(
-                                  "Calculate a LOSS :)",
+                                  "Calculate a LOSS or GAIN :)",
                                   style: headertextStyle,
                                 ),
                               ),

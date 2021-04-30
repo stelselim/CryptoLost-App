@@ -66,6 +66,28 @@ Future calculateEvent() async {
   }
 }
 
+Future interstitialAdOpenedEvent() async {
+  try {
+    final FirebaseAnalytics analytics = FirebaseAnalytics();
+    await analytics.logEvent(
+      name: events.INTERSTITIAL_ADS_OPENED_EVENT,
+    );
+  } catch (e) {
+    print(e);
+  }
+}
+
+Future interstitialAdFailedEvent() async {
+  try {
+    final FirebaseAnalytics analytics = FirebaseAnalytics();
+    await analytics.logEvent(
+      name: events.INTERSTITIAL_ADS_FAILED_EVENT,
+    );
+  } catch (e) {
+    print(e);
+  }
+}
+
 Future coinsDetailOpenedEvent() async {
   try {
     final FirebaseAnalytics analytics = FirebaseAnalytics();

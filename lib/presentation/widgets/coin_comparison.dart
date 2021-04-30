@@ -99,7 +99,8 @@ class CoinComparisonList extends StatelessWidget {
 
       var toSaveCalculation = Calculation(
         coinModel: currentCoin!,
-        dateTime: DateTime.now(),
+        currentDateTime: DateTime.now(),
+        oldDateTime: historyDate!,
         isLoss: _history > _current ? true : false,
         profit: (_history - _current).abs(),
         percentage: _ratio.abs(),
@@ -144,8 +145,9 @@ class CoinComparisonList extends StatelessWidget {
                   try {
                     await shareCalculation(
                       Calculation(
+                        oldDateTime: historyDate!,
                         coinModel: currentCoin!,
-                        dateTime: DateTime.now(),
+                        currentDateTime: DateTime.now(),
                         isLoss: historyOfCoin!
                                     .market_data!.current_price!["usd"]! >
                                 currentCoin!.market_data!.current_price!["usd"]!

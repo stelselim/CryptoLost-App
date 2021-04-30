@@ -4,13 +4,15 @@ import 'package:cryptolostapp/application/models/coin.dart';
 
 class Calculation {
   CoinModel coinModel;
-  DateTime dateTime;
+  DateTime oldDateTime;
+  DateTime currentDateTime;
   bool isLoss;
   num profit;
   num percentage;
   Calculation({
     required this.coinModel,
-    required this.dateTime,
+    required this.oldDateTime,
+    required this.currentDateTime,
     required this.isLoss,
     required this.profit,
     required this.percentage,
@@ -19,7 +21,8 @@ class Calculation {
   Map<String, dynamic> toMap() {
     return {
       'coinModel': coinModel.toMap(),
-      'dateTime': dateTime.millisecondsSinceEpoch,
+      'oldDateTime': oldDateTime.millisecondsSinceEpoch,
+      'currentDateTime': currentDateTime.millisecondsSinceEpoch,
       'isLoss': isLoss,
       'profit': profit,
       'percentage': percentage,
@@ -27,9 +30,21 @@ class Calculation {
   }
 
   factory Calculation.fromMap(Map<String, dynamic> map) {
+    DateTime oldDateTime;
+    DateTime currentDateTime;
+    if (map.containsKey("dateTime")) {
+      oldDateTime = DateTime.fromMillisecondsSinceEpoch(map['dateTime']);
+      currentDateTime = DateTime.now();
+    } else {
+      oldDateTime = DateTime.fromMillisecondsSinceEpoch(map['oldDateTime']);
+      currentDateTime =
+          DateTime.fromMillisecondsSinceEpoch(map['currentDateTime']);
+    }
+
     return Calculation(
       coinModel: CoinModel.fromMap(map['coinModel']),
-      dateTime: DateTime.fromMillisecondsSinceEpoch(map['dateTime']),
+      oldDateTime: oldDateTime,
+      currentDateTime: currentDateTime,
       isLoss: map['isLoss'],
       profit: map['profit'],
       percentage: map['percentage'],
@@ -47,7 +62,8 @@ class Calculation {
 
     return other is Calculation &&
         other.coinModel == coinModel &&
-        other.dateTime == dateTime &&
+        other.oldDateTime == oldDateTime &&
+        other.currentDateTime == currentDateTime &&
         other.isLoss == isLoss &&
         other.profit == profit &&
         other.percentage == percentage;
@@ -56,7 +72,8 @@ class Calculation {
   @override
   int get hashCode {
     return coinModel.hashCode ^
-        dateTime.hashCode ^
+        oldDateTime.hashCode ^
+        currentDateTime.hashCode ^
         isLoss.hashCode ^
         profit.hashCode ^
         percentage.hashCode;
@@ -64,19 +81,21 @@ class Calculation {
 
   @override
   String toString() {
-    return 'Calculation(coinModel: $coinModel, dateTime: $dateTime, isLoss: $isLoss, profit: $profit, percentage: $percentage)';
+    return 'Calculation(coinModel: $coinModel, oldDateTime: $oldDateTime, currentDateTime: $currentDateTime, isLoss: $isLoss, profit: $profit, percentage: $percentage)';
   }
 
   Calculation copyWith({
     CoinModel? coinModel,
-    DateTime? dateTime,
+    DateTime? oldDateTime,
+    DateTime? currentDateTime,
     bool? isLoss,
     num? profit,
     num? percentage,
   }) {
     return Calculation(
       coinModel: coinModel ?? this.coinModel,
-      dateTime: dateTime ?? this.dateTime,
+      oldDateTime: oldDateTime ?? this.oldDateTime,
+      currentDateTime: currentDateTime ?? this.currentDateTime,
       isLoss: isLoss ?? this.isLoss,
       profit: profit ?? this.profit,
       percentage: percentage ?? this.percentage,

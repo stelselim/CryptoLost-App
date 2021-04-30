@@ -64,7 +64,8 @@ class SavedCalculationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var coin = localcalculation!.coinModel;
-    var datetime = localcalculation!.dateTime;
+    var currentDate = localcalculation!.currentDateTime;
+    var oldDate = localcalculation!.oldDateTime;
     var ratio = localcalculation!.percentage;
 
     var currentprice = Text(
@@ -76,8 +77,10 @@ class SavedCalculationWidget extends StatelessWidget {
       child: Container(
         child: ListTile(
           leading: Image.network(coin.image!.thumb!),
-          subtitle:
-              Text("Today - " + DateFormat('MM-dd-yyyy').format(datetime)),
+          subtitle: Text("From " +
+              DateFormat('MM-dd-yyyy').format(currentDate) +
+              " To " +
+              DateFormat('MM-dd-yyyy').format(currentDate)),
           title: Text(coin.name!),
           trailing: trailingWidget(),
         ),
