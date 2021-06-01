@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1060734310978-8ivsc3l9u986rjss6vit2s22nnjgpu93.apps.googleusercontent.com</string>
+	<string>1060734310978-25motvh4f5uddj7nuf9si2hahc9qgrvf.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1060734310978-8ivsc3l9u986rjss6vit2s22nnjgpu93</string>
+	<string>com.googleusercontent.apps.1060734310978-25motvh4f5uddj7nuf9si2hahc9qgrvf</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1060734310978-hut7cs06puul2bc4foqp2ha8rp42mq68.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyANxJNQYoJOls283h-_yjJhqtVFrVcISRo</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>om.stel.cryptolostapp</string>
+	<string>com.stel.cryptolostapp</string>
 	<key>PROJECT_ID</key>
 	<string>crypto-loss-gain-app</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +31,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1060734310978:ios:b195bf6f06465929aa2bdb</string>
+	<string>1:1060734310978:ios:10fd8df31823320baa2bdb</string>
+	<key>ADMOB_APP_ID</key>
+	<string>ca-app-pub-6166717171948378~8701220868</string>
 </dict>
 </plist>
