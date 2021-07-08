@@ -12,6 +12,10 @@ In Flutter development, DDD might be used with different state management librar
 
 <br/>
 
+
+## CI/CD with CodeMagic
+Continuous Integration & Delivery (CI/CD) with Codemagic is properly set. For further reading, [here](https://blog.codemagic.io/getting-started-with-codemagic/).
+
 ## Authors
 
 👤 **Selim Ustel**
