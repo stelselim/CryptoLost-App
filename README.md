@@ -1,16 +1,32 @@
-# cryptolostapp
+# Crypto Loss Gain Calculator
 
-A new Flutter project.
+#### Crypto Loss Gain Calculator App build with Flutter. It developed with DDD (Domain Driven Design) principles.
 
-## Getting Started
+<br/>
 
-This project is a starting point for a Flutter application.
+## Domain-Driven Design
+Domain-driven design is a concept in order structure software projects and maintain the domain layer of the source code by [Eric Evans](https://www.linkedin.com/in/ericevansddd/). For further reading, [here](https://www.domainlanguage.com/ddd/). DDD is robust, solid & be applicable to various fields of software development. Thanks to DDD, massive projects are much maintainable with its principles. 
 
-A few resources to get you started if this is your first Flutter project:
+## Flutter with DDD
+In Flutter development, DDD might be used with different state management libraries; such as BLOC, provider, redux... This project uses Provider. The directory of the project is mainly seperated into 4 subdirectories: Application, Domain, Presentation, Infrastructure. Each subdirectory has a valuable role in DDD. Every one of them should be considered as a layer of a building. Some layers contact other layers, some do not. For further reading, [here](https://resocoder.com/2020/03/09/flutter-firebase-ddd-course-1-domain-driven-design-principles/).
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+<br/>
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Authors
+
+👤 **Selim Ustel**
+
+- GitHub: [@stelselim](https://github.com/stelselim)
+- LinkedIn: [@selimustel](https://www.linkedin.com/in/selimustel/)
+
+<br/>
+
+
+<view style="display: flex;
+  flex-direction: row-reverse;">
+<img src="https://github.com/stelselim/stelselim.github.io/blob/master/assets/projects/cryptoLost/1.png" width=320/>
+<img src="https://github.com/stelselim/stelselim.github.io/blob/master/assets/projects/cryptoLost/2.png" width=320/>
+<img src="https://github.com/stelselim/stelselim.github.io/blob/master/assets/projects/cryptoLost/3.png" width=320/>
+<img src="https://github.com/stelselim/stelselim.github.io/blob/master/assets/projects/cryptoLost/4.png" width=320/>  
+
+</view>
