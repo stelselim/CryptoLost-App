@@ -21,7 +21,6 @@
 #.vscode/
 
 # Flutter/Dart/Pub related
-lib/utility/admob/admob_config.dart
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
@@ -31,6 +30,7 @@ lib/utility/admob/admob_config.dart
 .pub-cache/
 .pub/
 /build/
+*.env
 
 # Web related
 lib/generated_plugin_registrant.dart
