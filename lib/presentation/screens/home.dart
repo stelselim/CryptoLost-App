@@ -1,10 +1,13 @@
+import 'package:cryptolostapp/application/classes/coinComparisonClass.dart';
 import 'package:cryptolostapp/application/models/coin.dart';
 import 'package:cryptolostapp/application/provider/appstate.dart';
 import 'package:cryptolostapp/infrastructure/coins.dart';
+import 'package:cryptolostapp/presentation/styles/textStyles.dart';
 import 'package:cryptolostapp/presentation/widgets/coin_comparison.dart';
 import 'package:cryptolostapp/presentation/widgets/coins_dropdown_item.dart';
 import 'package:cryptolostapp/utility/admob/admob_config.dart';
 import 'package:cryptolostapp/utility/admob/admob_interstitial.dart';
+import 'package:cryptolostapp/utility/amountTextToDouble.dart';
 import 'package:cryptolostapp/utility/analytics/google_anayltics_functions.dart';
 import 'package:cryptolostapp/utility/date_picker.dart';
 
@@ -31,36 +34,125 @@ class _HomeScreenState extends State<HomeScreen> {
       TextEditingController(); // Amount TextField Controller
   final FocusNode amountNode = FocusNode(); // Amount Keyboard Node
 
-  CoinModel? historyOfCoin; // Resulted Value
-  CoinModel? currentResultCoin; // Resulted Value
-  DateTime? historyOfDate; // Resulted Date
-  num? resultCoinAmount; // Result Amount
+  CoinComparisonClass?
+      coinComparisonClass; // Contains All States for Calculation
+
+  InterstitialAd? interstitialAd; // Interstial Ad
+  bool showAd = false; // check to show ad
 
 // Show ad with setState
-  showAdFunction() {
+  void showAdFunction() {
     setState(() {
       showAd = true;
     });
   }
 
 // Hide ad with setState
-  hideAdFunction() {
+  void hideAdFunction() {
     setState(() {
       showAd = false;
     });
   }
 
-  InterstitialAd? interstitialAd;
-  bool showAd = false;
-
-  final CoinDataRepository coinDataRepository =
-      CoinDataRepository(); // Coins Data Repository
-
-  Future getData(BuildContext context) async {
+  // Get Coins Data
+  Future<void> getData(BuildContext context) async {
     if (Provider.of<AppState>(context, listen: false).coins == null) {
+      final CoinDataRepository coinDataRepository =
+          CoinDataRepository(); // Coins Data Repository
       var res = await coinDataRepository.getCoins();
       Provider.of<AppState>(context, listen: false).setCoins(res);
     }
+  }
+
+  // Calculate Gain Loss
+  Future<void> calculateButtonPressed() async {
+    amountNode.unfocus();
+
+    if (amountTextController.text == "") {
+      Fluttertoast.showToast(msg: "Please enter amount");
+      return;
+    }
+
+    if (selectedCoin == null) {
+      Fluttertoast.showToast(msg: "Select a coin");
+      return;
+    }
+    if (selectedDate == null) {
+      Fluttertoast.showToast(msg: "Select a date");
+      return;
+    }
+
+    if (selectedCoin != null &&
+        selectedDate != null &&
+        amountTextController.text != "") {
+      // Count An Event
+      await calculateEvent();
+      try {
+        final CoinDataRepository coinDataRepository =
+            CoinDataRepository(); // Coins Data Repository
+
+        var coinResultLocal = await coinDataRepository.getCoinsSpesificDate(
+          selectedCoin!.id!,
+          selectedDate!,
+        );
+        Fluttertoast.showToast(msg: "Calculated!");
+        setState(
+          () {
+            coinComparisonClass = CoinComparisonClass(
+              currentResultCoin: selectedCoin!.copyWith(),
+              historyOfCoin: coinResultLocal!.copyWith(),
+              historyOfDate: selectedDate!,
+              resultCoinAmount: amountTextToDouble(amountTextController.text),
+            );
+          },
+        );
+        if (interstitialAd != null) {
+          await loadInterstitial(interstitialAd!);
+        }
+      } catch (e) {
+        print(e);
+        Fluttertoast.showToast(msg: "Error Occured");
+      }
+    }
+  }
+
+  void checkAd() {
+    // If true show intersitial ad
+    if (showAd && interstitialAd != null) {
+      interstitialAd!.show();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Get Coins Data
+    getData(context);
+    // Initialize IntersitialAd
+    interstitialAd = InterstitialAd(
+      adUnitId: interstitialAdUnitId,
+      listener: AdListener(
+        // Called when an ad is successfully received.
+        onAdLoaded: (Ad ad) {
+          showAdFunction();
+        },
+        // Called when an ad request failed.
+        onAdFailedToLoad: (Ad ad, LoadAdError error) {
+          ad.dispose();
+        },
+        // Called when an ad opens an overlay that covers the screen.
+        onAdOpened: (Ad ad) => print('Ad opened.'),
+        // Called when an ad removes an overlay that covers the screen.
+        onAdClosed: (Ad ad) {
+          ad.dispose();
+          hideAdFunction();
+        },
+        // Called when an ad is in the process of leaving the application.
+        onApplicationExit: (Ad ad) => print('Left application.'),
+      ),
+      request: AdRequest(),
+    );
   }
 
   @override
@@ -71,62 +163,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  void initState() {
-    getData(context);
-
-// ad Listener
-    final AdListener adListener = AdListener(
-      // Called when an ad is successfully received.
-      onAdLoaded: (Ad ad) {
-        print("Show Ad");
-        // Fluttertoast.showToast(msg: "SHOW AD", gravity: ToastGravity.CENTER);
-        showAdFunction();
-      },
-      // Called when an ad request failed.
-      onAdFailedToLoad: (Ad ad, LoadAdError error) {
-        ad.dispose();
-        // Fluttertoast.showToast(msg: "FAILED + $error");
-        print('Ad failed to load: $error');
-      },
-      // Called when an ad opens an overlay that covers the screen.
-      onAdOpened: (Ad ad) => print('Ad opened.'),
-      // Called when an ad removes an overlay that covers the screen.
-      onAdClosed: (Ad ad) {
-        ad.dispose();
-        hideAdFunction();
-      },
-      // Called when an ad is in the process of leaving the application.
-      onApplicationExit: (Ad ad) => print('Left application.'),
-    );
-
-    interstitialAd = InterstitialAd(
-      adUnitId: interstitialAdUnitId,
-      listener: adListener,
-      request: AdRequest(),
-    );
-
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (showAd && interstitialAd != null) {
-      interstitialAd!.show();
-    }
+    // show the ad if conditions true
+    checkAd();
 
-    final headertextStyle = TextStyle(
-      color: Colors.blueGrey.shade700,
-      fontWeight: FontWeight.w600,
-      fontSize: 17,
-      height: 1.35,
-    );
     return Consumer<AppState>(
       builder: (context, appstate, _) => GestureDetector(
-        onTap: () {
-          amountNode.unfocus();
-        },
+        onTap: () => amountNode.unfocus(), // Unfocus Keyboard
         child: Container(
-          color: Colors.transparent,
           child: Column(
             children: [
               // Text
@@ -154,7 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Container(
                     margin: EdgeInsets.symmetric(
                       vertical: getSize(context).height * 0.025,
-                      horizontal: getSize(context).width * 0.21,
+                      horizontal: getSize(context).width * 0.15,
                     ),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.blueGrey, width: 1.5),
@@ -169,39 +213,29 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         // Dropdown
                         Expanded(
-                          flex: 2,
+                          flex: 3,
                           child: DropdownButton<CoinModel>(
                             hint: Text("Select"),
                             underline: Container(),
-                            onChanged: (val) {
-                              try {
-                                setState(() {
-                                  selectedCoin = val;
-                                });
-                              } catch (e) {
-                                print(e);
-                              }
-                            },
+                            onChanged: (val) => setState(() {
+                              selectedCoin = val;
+                            }),
                             value: selectedCoin,
                             items: coinsDropDown(appstate.coins),
                           ),
                         ),
                         // TextField
                         Expanded(
-                          flex: 2,
+                          flex: 3,
                           child: TextField(
                             controller: amountTextController,
                             focusNode: amountNode,
-                            keyboardType: TextInputType.numberWithOptions(
-                              decimal: true,
-                            ),
+                            keyboardType: TextInputType.text,
                             maxLines: 1,
-                            onEditingComplete: () {
-                              amountNode.unfocus();
-                            },
+                            onEditingComplete: () => amountNode.unfocus(),
                             inputFormatters: [
                               FilteringTextInputFormatter.allow(
-                                  RegExp(r"[0-9.]")),
+                                  RegExp(r"[0-9.,]")),
                             ],
                             textAlign: TextAlign.center,
                             textInputAction: TextInputAction.done,
@@ -297,47 +331,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         textScaleFactor: 1.25,
                       ),
                     ),
-                    onPressed: () async {
-                      amountNode.unfocus();
-                      await calculateEvent();
-
-                      if (amountTextController.text == "") {
-                        Fluttertoast.showToast(msg: "Please enter amount");
-                      }
-
-                      if (selectedCoin == null) {
-                        Fluttertoast.showToast(msg: "Select a coin");
-                      }
-                      if (selectedDate == null) {
-                        Fluttertoast.showToast(msg: "Select a date");
-                      }
-
-                      if (selectedCoin != null &&
-                          selectedDate != null &&
-                          amountTextController.text != "") {
-                        try {
-                          var coinResultLocal =
-                              await coinDataRepository.getCoinsSpesificDate(
-                            selectedCoin!.id!,
-                            selectedDate!,
-                          );
-                          Fluttertoast.showToast(msg: "Calculated!");
-                          setState(() {
-                            currentResultCoin = selectedCoin!.copyWith();
-                            historyOfCoin = coinResultLocal!.copyWith();
-                            historyOfDate = selectedDate;
-                            resultCoinAmount =
-                                num.parse(amountTextController.text);
-                          });
-                          if (interstitialAd != null) {
-                            await loadInterstitial(interstitialAd!);
-                          }
-                        } catch (e) {
-                          print(e);
-                          Fluttertoast.showToast(msg: "Error Occured");
-                        }
-                      }
-                    },
+                    onPressed: calculateButtonPressed,
                   ),
                 ),
               ),
@@ -356,14 +350,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     children: [
                       Container(
-                        child: (currentResultCoin != null &&
-                                historyOfCoin != null &&
-                                historyOfDate != null)
+                        padding: EdgeInsets.only(bottom: 25),
+                        child: coinComparisonClass != null
                             ? CoinComparisonList(
-                                historyDate: historyOfDate,
-                                coinAmount: resultCoinAmount,
-                                currentCoin: currentResultCoin,
-                                historyOfCoin: historyOfCoin,
+                                coinComparison: coinComparisonClass!,
                               )
                             : Container(
                                 padding: EdgeInsets.all(35),
