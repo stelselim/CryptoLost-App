@@ -12,9 +12,34 @@ In Flutter development, DDD might be used with different state management librar
 
 <br/>
 
+## To Run
+
+```
+git clone https://github.com/stelselim/CryptoLost-App.git
+cd CryptoLost-App
+flutter pub get
+flutter run
+```
+<br/>
+
+## Testing
+
+### Integration Test
+* Calculation Test
+```
+flutter drive \                                                             
+  --driver=test_driver/integration_test.dart \
+  --target=integration_test/calculation_test.dart \
+  -d {DEVICE_ID}
+```
+
+<br/>
 
 ## CI/CD with CodeMagic
 Continuous Integration & Delivery (CI/CD) with Codemagic is properly set. For further reading, [here](https://blog.codemagic.io/getting-started-with-codemagic/).
+
+
+<br/>
 
 ## Authors
 
