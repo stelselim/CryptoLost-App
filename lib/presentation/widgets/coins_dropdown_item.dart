@@ -9,6 +9,7 @@ List<DropdownMenuItem<CoinModel>>? coinsDropDown(List<CoinModel>? coinModels) {
   coinModels.forEach((element) {
     if (element.id != null) {
       items.add(DropdownMenuItem(
+        key: Key(element.id.toString()),
         value: element,
         child: Text(
           element.symbol!.toUpperCase(),

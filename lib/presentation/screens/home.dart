@@ -10,6 +10,7 @@ import 'package:cryptolostapp/utility/admob/admob_interstitial.dart';
 import 'package:cryptolostapp/utility/amountTextToDouble.dart';
 import 'package:cryptolostapp/utility/analytics/google_anayltics_functions.dart';
 import 'package:cryptolostapp/utility/date_picker.dart';
+import 'package:cryptolostapp/utility/keys/keys.dart';
 
 import 'package:cryptolostapp/utility/screensizes.dart';
 import 'package:flutter/cupertino.dart';
@@ -216,6 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Expanded(
                           flex: 3,
                           child: DropdownButton<CoinModel>(
+                            key: coinDropDownKey,
                             hint: Text("Select"),
                             underline: Container(),
                             onChanged: (val) => setState(() {
@@ -229,6 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Expanded(
                           flex: 3,
                           child: TextField(
+                            key: textFieldKey,
                             controller: amountTextController,
                             focusNode: amountNode,
                             keyboardType: TextInputType.text,
@@ -301,6 +304,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       )
                     : CupertinoButton(
+                        key: dateSelectButtonKey,
                         child: Text("Select Date"),
                         onPressed: () async {
                           try {
@@ -322,6 +326,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 flex: 2,
                 child: Container(
                   child: ElevatedButton(
+                    key: calculateButtonKey,
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.green),
                     ),
@@ -354,6 +359,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: EdgeInsets.only(bottom: 25),
                         child: coinComparisonClass != null
                             ? CoinComparisonList(
+                                key: coinComparisonBottomKey,
                                 coinComparison: coinComparisonClass!,
                               )
                             : Container(
