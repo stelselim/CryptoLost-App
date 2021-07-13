@@ -10,33 +10,33 @@ class CoinsListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String formattedDate = DateFormat('hh:mm dd/MM/yyyy')
+    final String formattedDate = DateFormat('hh:mm dd/MM/yyyy')
         .format(DateTime.tryParse(coinModel!.last_updated!)!.toLocal());
-    String coinPrice = NumberFormat.currency(name: "")
+    final String coinPrice = NumberFormat.currency(name: "")
         .format(coinModel!.market_data!.current_price!["usd"]);
 
     if (coinModel == null) {
       return Container();
     }
-    return Container(
-      child: ListTile(
-        onTap: () async {
-          try {
-            var dialog = coinsDetailsDialog(context, coinModel);
-            await coinsDetailOpenedEvent();
-            showDialog(context: context, builder: (context) => dialog);
-          } catch (e) {}
-        },
-        leading: Image.network(coinModel!.image!.thumb!),
-        subtitle: Text(formattedDate),
-        title: Text(coinModel!.name!),
-        trailing: Text(
-          "\$" + coinPrice,
-          textScaleFactor: 1.25,
-          style: TextStyle(
-            color: Colors.indigo,
-            fontWeight: FontWeight.w600,
-          ),
+    return ListTile(
+      onTap: () async {
+        try {
+          final dialog = coinsDetailsDialog(context, coinModel);
+          await coinsDetailOpenedEvent();
+          showDialog(context: context, builder: (context) => dialog);
+        } catch (e) {
+          print(e);
+        }
+      },
+      leading: Image.network(coinModel!.image!.thumb!),
+      subtitle: Text(formattedDate),
+      title: Text(coinModel!.name!),
+      trailing: Text(
+        "\$$coinPrice",
+        textScaleFactor: 1.25,
+        style: const TextStyle(
+          color: Colors.indigo,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );

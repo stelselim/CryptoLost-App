@@ -1,13 +1,13 @@
-import 'package:cryptolostapp/application/models/calculations.dart';
-import 'package:cryptolostapp/utility/currencyFormatter.dart';
-import 'package:flutter/material.dart';
+import "package:cryptolostapp/application/models/calculations.dart";
+import 'package:cryptolostapp/utility/currency_formatter.dart';
+import "package:flutter/material.dart";
 
 class TotalCalculations extends StatelessWidget {
   final List<Calculation>? calculations;
   static num totalMoney = 0;
   const TotalCalculations({Key? key, this.calculations}) : super(key: key);
 
-  findTotal() {
+  String findTotal() {
     totalMoney = 0;
     calculations!.forEach((element) {
       totalMoney += element.profit;
@@ -17,7 +17,7 @@ class TotalCalculations extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String total = findTotal();
+    final String total = findTotal();
 
     return Container(
       color: Colors.blueGrey.shade100,
@@ -25,7 +25,7 @@ class TotalCalculations extends StatelessWidget {
         vertical: 15,
         horizontal: MediaQuery.of(context).size.width * 0.2,
       ),
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

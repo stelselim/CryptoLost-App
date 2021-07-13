@@ -1,0 +1,34 @@
+include: package:lint/analysis_options.yaml
+
+analyzer:
+  errors:
+    argument_type_not_assignable: false
+    for_in_of_invalid_element_type: false
+
+linter:
+  rules:
+    prefer_final_fields: true
+
+    constant_identifier_names: false
+
+    sort_pub_dependencies: false
+
+    avoid_annotating_with_dynamic: false
+
+    avoid_print: false
+
+    non_constant_identifier_names: false
+
+    avoid_function_literals_in_foreach_calls: false
+
+    prefer_final_locals: true
+
+    always_specify_types: false
+
+    always_declare_return_types: true
+
+    lines_longer_than_80_chars: false
+
+    avoid_empty_else: true
+
+    avoid_unnecessary_containers: true

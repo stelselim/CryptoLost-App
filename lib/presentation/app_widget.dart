@@ -16,10 +16,10 @@ class AppWidget extends StatelessWidget {
   static PreferredSizeWidget appBarWidget() {
     if (Platform.isAndroid) {
       return AppBar(
-        title: Text("Coin Loss & Gain Calculator"),
+        title: const Text("Coin Loss & Gain Calculator"),
       );
     } else {
-      return CupertinoNavigationBar(
+      return const CupertinoNavigationBar(
         middle: Text("Coin Loss & Gain Calculator"),
       );
     }
@@ -33,7 +33,7 @@ class AppWidget extends StatelessWidget {
         appBar: appBarWidget(),
         body: IndexedStack(
           index: appstate.index,
-          children: [
+          children: const [
             HomeScreen(),
             SelectedDateCoinScreen(),
             SavedCalculationsScreen(),
@@ -51,7 +51,7 @@ class AppWidget extends StatelessWidget {
             }
             Provider.of<AppState>(context, listen: false).updateIndex(val);
           },
-          items: [
+          items: const [
             BottomNavigationBarItem(
               label: "Gain / Loss",
               icon: Icon(Icons.format_indent_decrease),

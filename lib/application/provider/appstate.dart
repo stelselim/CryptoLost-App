@@ -6,19 +6,19 @@ class AppState extends ChangeNotifier {
   List<CoinModel>? coins; // Coins from API
   List<CoinModel> selectedDateCoins = []; // Coins at Selected Date;
 
-  updateIndex(int newIndex) {
+  void updateIndex(int newIndex) {
     if (index == newIndex) return;
     index = newIndex;
     notifyListeners();
   }
 
-  setCoins(List<CoinModel>? newCoins) {
+  void setCoins(List<CoinModel>? newCoins) {
     if (coins == newCoins) return;
     coins = newCoins;
     notifyListeners();
   }
 
-  setSelectedDateCoins(List<CoinModel> newCoins) {
+  void setSelectedDateCoins(List<CoinModel> newCoins) {
     if (selectedDateCoins == newCoins) return;
     selectedDateCoins = newCoins;
     notifyListeners();

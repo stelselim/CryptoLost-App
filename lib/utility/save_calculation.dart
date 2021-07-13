@@ -1,18 +1,18 @@
-import 'dart:convert';
-import 'package:cryptolostapp/application/models/calculations.dart';
-import 'package:cryptolostapp/application/models/coin.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import "dart:convert";
+import "package:cryptolostapp/application/models/calculations.dart";
+import "package:cryptolostapp/application/models/coin.dart";
+import "package:shared_preferences/shared_preferences.dart";
 
 const calculationKey = "CALCULATIONS";
 
 Future<List<Calculation>> getCalculations() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  // await prefs.clear();
-  var local = prefs.getString(calculationKey);
-  if (local == null) return [];
-  List<dynamic> tempList = jsonDecode(local);
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-// Update Old Calculations
+  final local = prefs.getString(calculationKey);
+  if (local == null) return [];
+  final List<dynamic> tempList = jsonDecode(local) as List<dynamic>;
+
+  // Update Old Calculations
   updateCalculationsFromOld(prefs, tempList);
 
   final calculations = List.generate(
@@ -25,34 +25,34 @@ Future<List<Calculation>> getCalculations() async {
 }
 
 Future<void> saveNewCalculation(Calculation calculationValue) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  var calculations = await getCalculations();
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final calculations = await getCalculations();
   calculations.add(calculationValue);
   await prefs.setString(calculationKey, jsonEncode(calculations));
 }
 
 Future<void> deleteCalculation(int index) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  var calculations = await getCalculations();
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final calculations = await getCalculations();
   calculations.removeAt(index);
   await prefs.setString(calculationKey, jsonEncode(calculations));
 }
 
 Future<void> clearCalculations() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.remove(calculationKey);
 }
 
 Future<List<Calculation>> updateCalculationsFromOld(
     SharedPreferences prefs, List<dynamic> list) async {
-  List<Calculation> calculationList = [];
-  for (String e in list) {
-    Map<String, dynamic> x = jsonDecode(e);
+  final List<Calculation> calculationList = [];
+  for (final String e in list) {
+    final Map<String, dynamic> x = jsonDecode(e) as Map<String, dynamic>;
 
     if (x.containsKey("dateTime")) {
-      var local = Calculation(
+      final local = Calculation(
         profit: x["profit"],
-        coinModel: CoinModel.fromMap(x['coinModel']),
+        coinModel: CoinModel.fromMap(x["coinModel"]),
         currentDateTime: DateTime.now(),
         isLoss: x["isLoss"],
         percentage: x["percentage"],
@@ -60,7 +60,7 @@ Future<List<Calculation>> updateCalculationsFromOld(
       );
       calculationList.add(local);
     } else {
-      var local = Calculation.fromMap(x);
+      final local = Calculation.fromMap(x);
       calculationList.add(local);
     }
   }

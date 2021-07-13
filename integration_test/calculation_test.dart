@@ -4,7 +4,6 @@ import 'package:cryptolostapp/utility/keys/keys.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:integration_test/integration_test.dart';
 
 void main() {
@@ -12,7 +11,7 @@ void main() {
 
   // Initiliaze Admob
   initializeAdmob();
-  dotenv.load(fileName: ".env");
+  dotenv.load(); // Loads .env
 
   testWidgets("Test Case 1", (WidgetTester tester) async {
     await tester.pumpWidget(App());
@@ -23,7 +22,7 @@ void main() {
     await tester.tap(find.byKey(coinDropDownKey));
     await tester.pumpAndSettle();
 
-    final dropdownButton = find.byKey(Key("bitcoin"));
+    final dropdownButton = find.byKey(const Key("bitcoin"));
     await tester.tap(dropdownButton.first, warnIfMissed: false);
 
     await tester.enterText(find.byKey(textFieldKey), "12.2");
@@ -40,7 +39,7 @@ void main() {
 
     expect(find.byKey(coinComparisonBottomKey), findsOneWidget);
 
-    await tester.pump(Duration(seconds: 2));
+    await tester.pump(const Duration(seconds: 2));
   });
 
   testWidgets("Test Case 2 & Ad Test", (WidgetTester tester) async {
@@ -52,7 +51,7 @@ void main() {
     await tester.tap(find.byKey(coinDropDownKey));
     await tester.pumpAndSettle();
 
-    final dropdownButton = find.byKey(Key("bitcoin"));
+    final dropdownButton = find.byKey(const Key("bitcoin"));
     await tester.tap(dropdownButton.first, warnIfMissed: false);
 
     await tester.enterText(find.byKey(textFieldKey), "12,2");
@@ -69,6 +68,6 @@ void main() {
 
     expect(find.byKey(coinComparisonBottomKey), findsOneWidget);
 
-    await tester.pump(Duration(seconds: 10)); // Check Ad show up.
+    await tester.pump(const Duration(seconds: 10)); // Check Ad show up.
   });
 }

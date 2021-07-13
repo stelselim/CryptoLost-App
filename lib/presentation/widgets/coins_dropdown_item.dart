@@ -2,7 +2,7 @@ import 'package:cryptolostapp/application/models/coin.dart';
 import 'package:flutter/material.dart';
 
 List<DropdownMenuItem<CoinModel>>? coinsDropDown(List<CoinModel>? coinModels) {
-  List<DropdownMenuItem<CoinModel>> items = [];
+  final List<DropdownMenuItem<CoinModel>> items = [];
   if (coinModels == null) {
     return [];
   }

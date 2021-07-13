@@ -26,9 +26,9 @@ class SavedCalculationWidget extends StatelessWidget {
     color: Colors.red,
   );
 
-  void delete() async {
+  Future<void> delete() async {
     try {
-      final snackBar = SnackBar(content: Text('Calculation deleted!'));
+      const snackBar = SnackBar(content: Text('Calculation deleted!'));
       ScaffoldMessenger.of(context!).showSnackBar(snackBar);
       await deleteCalculation(index!);
       setState!(() {});
@@ -37,7 +37,7 @@ class SavedCalculationWidget extends StatelessWidget {
     }
   }
 
-  void share() async {
+  Future<void> share() async {
     try {
       await shareCalculation(localcalculation!);
     } catch (e) {
@@ -46,7 +46,7 @@ class SavedCalculationWidget extends StatelessWidget {
   }
 
   Widget trailingWidget() {
-    String profit =
+    final String profit =
         NumberFormat.currency(name: "").format(localcalculation!.profit);
     if (localcalculation!.isLoss) {
       return Text(
@@ -63,27 +63,19 @@ class SavedCalculationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var coin = localcalculation!.coinModel;
-    var currentDate = localcalculation!.currentDateTime;
-    var oldDate = localcalculation!.oldDateTime;
-    var ratio = localcalculation!.percentage;
+    final coin = localcalculation!.coinModel;
+    final currentDate = localcalculation!.currentDateTime;
 
-    var currentprice = Text(
-      coin.market_data!.current_price!["usd"]!.toStringAsFixed(2),
-    );
     return Slidable(
-      actionPane: SlidableDrawerActionPane(),
-      actionExtentRatio: 0.25,
-      child: Container(
-        child: ListTile(
-          leading: Image.network(coin.image!.thumb!),
-          subtitle: Text("From " +
-              DateFormat('MM-dd-yyyy').format(currentDate) +
-              " To " +
-              DateFormat('MM-dd-yyyy').format(currentDate)),
-          title: Text(coin.name!),
-          trailing: trailingWidget(),
+      actionPane: const SlidableDrawerActionPane(),
+      // ignore: sort_child_properties_last
+      child: ListTile(
+        leading: Image.network(coin.image!.thumb!),
+        title: Text(coin.name!),
+        subtitle: Text(
+          "From ${DateFormat('MM-dd-yyyy').format(currentDate)} To ${DateFormat('MM-dd-yyyy').format(currentDate)}",
         ),
+        trailing: trailingWidget(),
       ),
       secondaryActions: <Widget>[
         IconSlideAction(

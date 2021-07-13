@@ -10,42 +10,40 @@ class SelectedDateCoinScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: RefreshIndicator(
-        onRefresh: () async {
-          try {
-            await Future.delayed(Duration(milliseconds: 300));
+    return RefreshIndicator(
+      onRefresh: () async {
+        try {
+          await Future.delayed(const Duration(milliseconds: 300));
 
-            final CoinDataRepository coinDataRepository =
-                CoinDataRepository(); // Coins Data Repository
+          final CoinDataRepository coinDataRepository =
+              CoinDataRepository(); // Coins Data Repository
 
-            var res = await coinDataRepository.getCoins();
-            Provider.of<AppState>(context, listen: false).setCoins(res);
-            Fluttertoast.showToast(
-                msg: "Refreshed with latest!", gravity: ToastGravity.CENTER);
-          } catch (e) {
-            print(e);
+          final res = await coinDataRepository.getCoins();
+          Provider.of<AppState>(context, listen: false).setCoins(res);
+          Fluttertoast.showToast(
+              msg: "Refreshed with latest!", gravity: ToastGravity.CENTER);
+        } catch (e) {
+          print(e);
+        }
+      },
+      child: Consumer<AppState>(
+        builder: (context, appstate, _) {
+          final coins = appstate.coins;
+          if (coins != null && coins.isNotEmpty) {
+            return ListView.builder(
+              itemCount: coins.length,
+              itemBuilder: (context, index) {
+                return CoinsListTile(
+                  coinModel: coins.elementAt(index),
+                );
+              },
+            );
+          } else {
+            return const Center(
+              child: CircleAvatar(),
+            );
           }
         },
-        child: Consumer<AppState>(
-          builder: (context, appstate, _) {
-            var coins = appstate.coins;
-            if (coins != null && coins.isNotEmpty) {
-              return ListView.builder(
-                itemCount: coins.length,
-                itemBuilder: (context, index) {
-                  return CoinsListTile(
-                    coinModel: coins.elementAt(index),
-                  );
-                },
-              );
-            } else {
-              return Center(
-                child: CircleAvatar(),
-              );
-            }
-          },
-        ),
       ),
     );
   }

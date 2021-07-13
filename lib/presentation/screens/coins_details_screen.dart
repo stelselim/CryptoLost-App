@@ -5,8 +5,6 @@ class CoinsDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text("Detail Screen"),
-    );
+    return const Text("Detail Screen");
   }
 }

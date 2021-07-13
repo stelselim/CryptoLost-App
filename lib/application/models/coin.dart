@@ -205,15 +205,15 @@ class CoinMarketData {
 
   Map<String, dynamic> toMap() {
     return {
-      'current_price': current_price,
-      'market_cap': market_cap,
-      'market_cap_rank': market_cap_rank,
-      'price_change_24h': price_change_24h,
-      'price_change_percentage_24h': price_change_percentage_24h,
-      'price_change_percentage_7d': price_change_percentage_7d,
-      'price_change_percentage_30d': price_change_percentage_30d,
-      'price_change_percentage_200d': price_change_percentage_200d,
-      'market_cap_change_24h': market_cap_change_24h,
+      "current_price": current_price,
+      "market_cap": market_cap,
+      "market_cap_rank": market_cap_rank,
+      "price_change_24h": price_change_24h,
+      "price_change_percentage_24h": price_change_percentage_24h,
+      "price_change_percentage_7d": price_change_percentage_7d,
+      "price_change_percentage_30d": price_change_percentage_30d,
+      "price_change_percentage_200d": price_change_percentage_200d,
+      "market_cap_change_24h": market_cap_change_24h,
     };
   }
 
@@ -238,7 +238,7 @@ class CoinMarketData {
 
   @override
   String toString() {
-    return 'CoinMarketData(current_price: $current_price, market_cap: $market_cap, market_cap_rank: $market_cap_rank, price_change_24h: $price_change_24h, price_change_percentage_24h: $price_change_percentage_24h, price_change_percentage_7d: $price_change_percentage_7d, price_change_percentage_30d: $price_change_percentage_30d, price_change_percentage_200d: $price_change_percentage_200d, market_cap_change_24h: $market_cap_change_24h)';
+    return "CoinMarketData(current_price: $current_price, market_cap: $market_cap, market_cap_rank: $market_cap_rank, price_change_24h: $price_change_24h, price_change_percentage_24h: $price_change_percentage_24h, price_change_percentage_7d: $price_change_percentage_7d, price_change_percentage_30d: $price_change_percentage_30d, price_change_percentage_200d: $price_change_percentage_200d, market_cap_change_24h: $market_cap_change_24h)";
   }
 
   @override

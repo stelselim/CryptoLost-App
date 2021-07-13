@@ -1,5 +1,5 @@
 import 'package:cryptolostapp/application/provider/appstate.dart';
-import 'package:cryptolostapp/presentation/App.dart';
+import 'package:cryptolostapp/presentation/app_widget.dart';
 import 'package:cryptolostapp/utility/admob/admob_initialize.dart';
 import 'package:cryptolostapp/utility/analytics/google_anayltics_functions.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,7 +11,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   // Initiliaze Admob
   initializeAdmob();
-  dotenv.load(fileName: ".env");
+  dotenv.load(); // Loads .env
   runApp(App());
 }
 
@@ -26,7 +26,7 @@ class App extends StatelessWidget {
           // Check for errors
           if (snapshot.hasError) {
             appNotOpenedEvent();
-            return Text("An Error Occured");
+            return const Text("An Error Occured");
           }
 
           // Once complete, show your application
@@ -39,12 +39,12 @@ class App extends StatelessWidget {
                 )
               ],
               child: MaterialApp(
-                title: 'Crypto Loss Calculator',
+                title: 'Crypto Gain Loss',
                 debugShowCheckedModeBanner: false,
                 theme: ThemeData(
                   primarySwatch: Colors.blue,
                 ),
-                home: AppWidget(),
+                home: const AppWidget(),
               ),
             );
           }
@@ -53,7 +53,7 @@ class App extends StatelessWidget {
             color: Colors.white,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: const [
                 Center(
                   child: CircularProgressIndicator(),
                 ),

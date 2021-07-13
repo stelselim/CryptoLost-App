@@ -9,10 +9,10 @@ class CoinDataRepository with CoinDataDomain {
   @override
   Future<List<CoinModel>> getCoins() async {
     final uri = Uri.parse("https://api.coingecko.com/api/v3/coins/");
-    var resp = await http.get(uri);
-    List<dynamic> res = jsonDecode(resp.body);
+    final resp = await http.get(uri);
+    final List<dynamic> res = jsonDecode(resp.body) as List<dynamic>;
 
-    List<CoinModel> coins = List.generate(
+    final List<CoinModel> coins = List.generate(
         res.length, (index) => CoinModel.fromMap(res.elementAt(index)));
 
     return coins;
@@ -20,11 +20,11 @@ class CoinDataRepository with CoinDataDomain {
 
   @override
   Future<CoinModel?> getCoinsSpesificDate(String id, DateTime dateTime) async {
-    String formattedDate = DateFormat('dd-MM-yyyy').format(dateTime);
+    final String formattedDate = DateFormat("dd-MM-yyyy").format(dateTime);
 
     final uri = Uri.parse(
         "https://api.coingecko.com/api/v3/coins/$id/history?date=$formattedDate");
-    var resp = await http.get(uri);
+    final resp = await http.get(uri);
 
     return CoinModel.fromJson(resp.body);
   }

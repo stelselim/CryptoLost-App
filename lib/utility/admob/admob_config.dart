@@ -9,14 +9,16 @@ String get interstitialAdUnitId {
   final androidUnitId = dotenv.env['AndroidInterstitialUnitId'] ?? '';
 
   if (kDebugMode) {
-    if (Platform.isIOS)
+    if (Platform.isIOS) {
       return "ca-app-pub-3940256099942544/5135589807";
-    else
+    } else {
       return "ca-app-pub-3940256099942544/8691691433";
+    }
   } else {
-    if (Platform.isIOS)
+    if (Platform.isIOS) {
       return iosUnitId;
-    else
+    } else {
       return androidUnitId;
+    }
   }
 }
