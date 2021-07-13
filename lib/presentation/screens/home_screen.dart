@@ -1,7 +1,8 @@
 import 'package:cryptolostapp/application/classes/coin_comparison_class.dart';
 import 'package:cryptolostapp/application/models/coin.dart';
 import 'package:cryptolostapp/application/provider/appstate.dart';
-import 'package:cryptolostapp/infrastructure/coins.dart';
+import 'package:cryptolostapp/infrastructure/calculation/coin_calculation_history.dart';
+import 'package:cryptolostapp/infrastructure/coin_data/coins.dart';
 import 'package:cryptolostapp/presentation/styles/text_styles.dart';
 import 'package:cryptolostapp/presentation/widgets/coin_comparison.dart';
 import 'package:cryptolostapp/presentation/widgets/coins_dropdown_item.dart';
@@ -9,6 +10,7 @@ import 'package:cryptolostapp/utility/admob/admob_config.dart';
 import 'package:cryptolostapp/utility/admob/admob_interstitial.dart';
 import 'package:cryptolostapp/utility/amount_text_to_double.dart';
 import 'package:cryptolostapp/utility/analytics/google_anayltics_functions.dart';
+import 'package:cryptolostapp/utility/coin_models_to_history_calculation.dart';
 import 'package:cryptolostapp/utility/date_picker.dart';
 import 'package:cryptolostapp/utility/keys/keys.dart';
 
@@ -88,6 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
         amountTextController.text != "") {
       // Count An Event
       await calculateEvent();
+
       try {
         final CoinDataRepository coinDataRepository =
             CoinDataRepository(); // Coins Data Repository
@@ -107,7 +110,15 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           },
         );
-        if (interstitialAd != null) {
+        final historyCalculation = coinModelsToHistoryCalculation(
+          selectedCoin!.copyWith(),
+          coinResultLocal!.copyWith(),
+          selectedDate!,
+        );
+        // Save To History
+        await CoinCalculationHistoryRepository()
+            .addACalculationToHistory(historyCalculation);
+        if (mounted && interstitialAd != null) {
           await loadInterstitial(interstitialAd!);
         }
       } catch (e) {

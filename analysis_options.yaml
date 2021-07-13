@@ -1,9 +1,9 @@
 include: package:lint/analysis_options.yaml
 
 analyzer:
-  errors:
-    argument_type_not_assignable: false
-    for_in_of_invalid_element_type: false
+  # errors:
+  #   argument_type_not_assignable: false
+  #   for_in_of_invalid_element_type: false
 
 linter:
   rules:

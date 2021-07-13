@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:cryptolostapp/application/provider/appstate.dart';
-import 'package:cryptolostapp/presentation/screens/home.dart';
-import 'package:cryptolostapp/presentation/screens/saved_calculations.dart';
-import 'package:cryptolostapp/presentation/screens/selected_date_screen.dart';
+import 'package:cryptolostapp/presentation/screens/coins_screen.dart';
+import 'package:cryptolostapp/presentation/screens/home_screen.dart';
+import 'package:cryptolostapp/presentation/screens/portfolio_screen.dart';
+
 import 'package:cryptolostapp/utility/analytics/google_anayltics_functions.dart';
+import 'package:cryptolostapp/utility/routes/routes.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,14 +15,41 @@ import 'package:provider/provider.dart';
 class AppWidget extends StatelessWidget {
   const AppWidget({Key? key}) : super(key: key);
 
-  static PreferredSizeWidget appBarWidget() {
+  static PreferredSizeWidget appBarWidget(BuildContext context) {
+    const title = Text("Loss & Gain Calculator");
+
+    final drawerButton = IconButton(
+      onPressed: () {
+        print("Hey");
+      },
+      icon: const Icon(Icons.menu),
+    );
+    final historyButton = IconButton(
+      onPressed: () =>
+          Navigator.pushNamed(context, coinCalculationHistoryRoute),
+      icon: const Icon(
+        Icons.history,
+      ),
+    );
+
     if (Platform.isAndroid) {
       return AppBar(
-        title: const Text("Coin Loss & Gain Calculator"),
+        title: title,
+        centerTitle: true,
+        leading: drawerButton,
+        actions: [
+          historyButton,
+        ],
       );
     } else {
-      return const CupertinoNavigationBar(
-        middle: Text("Coin Loss & Gain Calculator"),
+      return CupertinoNavigationBar(
+        middle: title,
+        leading: drawerButton,
+        trailing: Wrap(
+          children: [
+            historyButton,
+          ],
+        ),
       );
     }
   }
@@ -30,13 +59,13 @@ class AppWidget extends StatelessWidget {
     return Consumer<AppState>(
       builder: (context, appstate, _) => Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: appBarWidget(),
+        appBar: appBarWidget(context),
         body: IndexedStack(
           index: appstate.index,
           children: const [
             HomeScreen(),
-            SelectedDateCoinScreen(),
-            SavedCalculationsScreen(),
+            CoinsScreen(),
+            PortfolioScreen(),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -53,15 +82,15 @@ class AppWidget extends StatelessWidget {
           },
           items: const [
             BottomNavigationBarItem(
-              label: "Gain / Loss",
-              icon: Icon(Icons.format_indent_decrease),
+              label: "Calculator",
+              icon: Icon(Icons.calculate),
             ),
             BottomNavigationBarItem(
               label: "Coins",
               icon: Icon(Icons.list_alt),
             ),
             BottomNavigationBarItem(
-              label: "Saved",
+              label: "Portfolio",
               icon: Icon(Icons.bar_chart),
             ),
           ],

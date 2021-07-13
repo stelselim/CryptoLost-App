@@ -1,8 +1,8 @@
-import 'package:cryptolostapp/application/models/calculations.dart';
+import 'package:cryptolostapp/application/models/portfolio_calculations.dart';
 import 'package:cryptolostapp/utility/analytics/google_anayltics_functions.dart';
 import 'package:share/share.dart';
 
-Future<void> shareCalculation(Calculation calculation) async {
+Future<void> shareCalculation(PorfolioCalculation calculation) async {
   final profit = calculation.profit.toStringAsFixed(2);
 
   final percentage = calculation.percentage.toStringAsFixed(2);

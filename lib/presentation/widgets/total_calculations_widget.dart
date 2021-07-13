@@ -1,9 +1,9 @@
-import "package:cryptolostapp/application/models/calculations.dart";
+import 'package:cryptolostapp/application/models/portfolio_calculations.dart';
 import 'package:cryptolostapp/utility/currency_formatter.dart';
 import "package:flutter/material.dart";
 
 class TotalCalculations extends StatelessWidget {
-  final List<Calculation>? calculations;
+  final List<PorfolioCalculation>? calculations;
   static num totalMoney = 0;
   const TotalCalculations({Key? key, this.calculations}) : super(key: key);
 

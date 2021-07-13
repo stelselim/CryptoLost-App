@@ -2,15 +2,17 @@ import 'dart:convert';
 
 import 'package:cryptolostapp/application/models/coin.dart';
 
-class Calculation {
+class HistoryCalculation {
   CoinModel coinModel;
+  CoinModel oldCoinModel;
   DateTime oldDateTime;
   DateTime currentDateTime;
   bool isLoss;
   num profit;
   num percentage;
-  Calculation({
+  HistoryCalculation({
     required this.coinModel,
+    required this.oldCoinModel,
     required this.oldDateTime,
     required this.currentDateTime,
     required this.isLoss,
@@ -21,6 +23,7 @@ class Calculation {
   Map<String, dynamic> toMap() {
     return {
       'coinModel': coinModel.toMap(),
+      'oldCoinModel': oldCoinModel.toMap(),
       'oldDateTime': oldDateTime.millisecondsSinceEpoch,
       'currentDateTime': currentDateTime.millisecondsSinceEpoch,
       'isLoss': isLoss,
@@ -29,22 +32,13 @@ class Calculation {
     };
   }
 
-  factory Calculation.fromMap(Map<String, dynamic> map) {
-    DateTime oldDateTime;
-    DateTime currentDateTime;
-    if (map.containsKey("dateTime")) {
-      oldDateTime = DateTime.fromMillisecondsSinceEpoch(map['dateTime']);
-      currentDateTime = DateTime.now();
-    } else {
-      oldDateTime = DateTime.fromMillisecondsSinceEpoch(map['oldDateTime']);
-      currentDateTime =
-          DateTime.fromMillisecondsSinceEpoch(map['currentDateTime']);
-    }
-
-    return Calculation(
+  factory HistoryCalculation.fromMap(Map<String, dynamic> map) {
+    return HistoryCalculation(
       coinModel: CoinModel.fromMap(map['coinModel']),
-      oldDateTime: oldDateTime,
-      currentDateTime: currentDateTime,
+      oldCoinModel: CoinModel.fromMap(map['oldCoinModel']),
+      oldDateTime: DateTime.fromMillisecondsSinceEpoch(map['oldDateTime']),
+      currentDateTime:
+          DateTime.fromMillisecondsSinceEpoch(map['currentDateTime']),
       isLoss: map['isLoss'],
       profit: map['profit'],
       percentage: map['percentage'],
@@ -53,15 +47,16 @@ class Calculation {
 
   String toJson() => json.encode(toMap());
 
-  factory Calculation.fromJson(String source) =>
-      Calculation.fromMap(json.decode(source));
+  factory HistoryCalculation.fromJson(String source) =>
+      HistoryCalculation.fromMap(json.decode(source));
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is Calculation &&
+    return other is HistoryCalculation &&
         other.coinModel == coinModel &&
+        other.oldCoinModel == oldCoinModel &&
         other.oldDateTime == oldDateTime &&
         other.currentDateTime == currentDateTime &&
         other.isLoss == isLoss &&
@@ -72,6 +67,7 @@ class Calculation {
   @override
   int get hashCode {
     return coinModel.hashCode ^
+        oldCoinModel.hashCode ^
         oldDateTime.hashCode ^
         currentDateTime.hashCode ^
         isLoss.hashCode ^
@@ -81,19 +77,21 @@ class Calculation {
 
   @override
   String toString() {
-    return 'Calculation(coinModel: $coinModel, oldDateTime: $oldDateTime, currentDateTime: $currentDateTime, isLoss: $isLoss, profit: $profit, percentage: $percentage)';
+    return 'HistoryCalculation(coinModel: $coinModel, oldCoinModel: $oldCoinModel, oldDateTime: $oldDateTime, currentDateTime: $currentDateTime, isLoss: $isLoss, profit: $profit, percentage: $percentage)';
   }
 
-  Calculation copyWith({
+  HistoryCalculation copyWith({
     CoinModel? coinModel,
+    CoinModel? oldCoinModel,
     DateTime? oldDateTime,
     DateTime? currentDateTime,
     bool? isLoss,
     num? profit,
     num? percentage,
   }) {
-    return Calculation(
+    return HistoryCalculation(
       coinModel: coinModel ?? this.coinModel,
+      oldCoinModel: oldCoinModel ?? this.oldCoinModel,
       oldDateTime: oldDateTime ?? this.oldDateTime,
       currentDateTime: currentDateTime ?? this.currentDateTime,
       isLoss: isLoss ?? this.isLoss,

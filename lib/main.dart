@@ -1,7 +1,9 @@
 import 'package:cryptolostapp/application/provider/appstate.dart';
 import 'package:cryptolostapp/presentation/app_widget.dart';
+import 'package:cryptolostapp/presentation/screens/history_screen.dart';
 import 'package:cryptolostapp/utility/admob/admob_initialize.dart';
 import 'package:cryptolostapp/utility/analytics/google_anayltics_functions.dart';
+import 'package:cryptolostapp/utility/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -44,7 +46,12 @@ class App extends StatelessWidget {
                 theme: ThemeData(
                   primarySwatch: Colors.blue,
                 ),
-                home: const AppWidget(),
+                initialRoute: "/",
+                routes: {
+                  homeRoute: (context) => const AppWidget(),
+                  coinCalculationHistoryRoute: (context) =>
+                      const CalculationHistoryScreen(),
+                },
               ),
             );
           }

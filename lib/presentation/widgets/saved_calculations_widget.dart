@@ -1,5 +1,5 @@
-import 'package:cryptolostapp/application/models/calculations.dart';
-import 'package:cryptolostapp/utility/save_calculation.dart';
+import 'package:cryptolostapp/application/models/portfolio_calculations.dart';
+import 'package:cryptolostapp/infrastructure/calculation/save_calculation.dart';
 import 'package:cryptolostapp/utility/share_calculation.dart';
 import 'package:flutter/material.dart';
 
@@ -7,10 +7,12 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 
 class SavedCalculationWidget extends StatelessWidget {
-  final Calculation? localcalculation;
+  final PorfolioCalculation? localcalculation;
   final Function(void Function())? setState;
   final BuildContext? context;
   final int? index;
+
+  static final SlidableController slidableController = SlidableController();
 
   const SavedCalculationWidget({
     Key? key,
@@ -30,7 +32,7 @@ class SavedCalculationWidget extends StatelessWidget {
     try {
       const snackBar = SnackBar(content: Text('Calculation deleted!'));
       ScaffoldMessenger.of(context!).showSnackBar(snackBar);
-      await deleteCalculation(index!);
+      await deletePortfolioCalculations(index!);
       setState!(() {});
     } catch (e) {
       print(e);
@@ -67,6 +69,7 @@ class SavedCalculationWidget extends StatelessWidget {
     final currentDate = localcalculation!.currentDateTime;
 
     return Slidable(
+      controller: slidableController,
       actionPane: const SlidableDrawerActionPane(),
       // ignore: sort_child_properties_last
       child: ListTile(

@@ -1,7 +1,8 @@
 import 'package:cryptolostapp/application/classes/coin_comparison_class.dart';
-import 'package:cryptolostapp/application/models/calculations.dart';
+import 'package:cryptolostapp/application/models/portfolio_calculations.dart';
 import 'package:cryptolostapp/application/models/coin.dart';
-import 'package:cryptolostapp/utility/save_calculation.dart';
+import 'package:cryptolostapp/infrastructure/calculation/save_calculation.dart';
+import 'package:cryptolostapp/utility/coin_models_to_portfolio_calculation.dart';
 import 'package:cryptolostapp/utility/share_calculation.dart';
 import 'package:flutter/material.dart';
 import 'package:cryptolostapp/utility/analytics/google_anayltics_functions.dart';
@@ -15,10 +16,7 @@ class CoinComparisonList extends StatelessWidget {
     required this.coinComparison,
   }) : super(key: key);
 
-  Widget findRatio() {
-    final CoinModel currentCoin = coinComparison.currentResultCoin.copyWith();
-    final CoinModel historyOfCoin = coinComparison.historyOfCoin.copyWith();
-
+  Widget findRatio(CoinModel currentCoin, CoinModel historyOfCoin) {
     final _history = historyOfCoin.market_data!.current_price!["usd"]!;
     final _current = currentCoin.market_data!.current_price!["usd"]!;
 
@@ -56,11 +54,11 @@ class CoinComparisonList extends StatelessWidget {
     }
   }
 
-  Widget profitWidget() {
-    final num coinAmount = coinComparison.resultCoinAmount;
-    final CoinModel currentCoin = coinComparison.currentResultCoin.copyWith();
-    final CoinModel historyOfCoin = coinComparison.historyOfCoin.copyWith();
-
+  Widget profitWidget(
+    num coinAmount,
+    CoinModel currentCoin,
+    CoinModel historyOfCoin,
+  ) {
     final _history = historyOfCoin.market_data!.current_price!["usd"]!;
     final _current = currentCoin.market_data!.current_price!["usd"]!;
 
@@ -99,19 +97,12 @@ class CoinComparisonList extends StatelessWidget {
     final DateTime historyDate = coinComparison.historyOfDate;
 
     try {
-      final _history = historyOfCoin.market_data!.current_price!["usd"]!;
-      final _current = currentCoin.market_data!.current_price!["usd"]!;
-      final _ratio = 100 * (_current - _history) / _history;
-
-      final toSaveCalculation = Calculation(
-        coinModel: currentCoin,
-        currentDateTime: DateTime.now(),
-        oldDateTime: historyDate,
-        isLoss: _history > _current,
-        profit: (_history - _current).abs(),
-        percentage: _ratio.abs(),
+      final portfolioCalculation = coinModelsToPortfolioCalculation(
+        currentCoin,
+        historyOfCoin,
+        historyDate,
       );
-      await saveNewCalculation(toSaveCalculation);
+      await saveNewPortfolioCalculations(portfolioCalculation);
       await savedCalculationEvent();
     } catch (e) {
       print(e);
@@ -153,7 +144,7 @@ class CoinComparisonList extends StatelessWidget {
               onPressed: () async {
                 try {
                   await shareCalculation(
-                    Calculation(
+                    PorfolioCalculation(
                       oldDateTime: historyDate,
                       coinModel: currentCoin,
                       currentDateTime: DateTime.now(),
@@ -186,7 +177,11 @@ class CoinComparisonList extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(15.0),
-          child: profitWidget(),
+          child: profitWidget(
+            coinComparison.resultCoinAmount,
+            coinComparison.currentResultCoin.copyWith(),
+            coinComparison.historyOfCoin.copyWith(),
+          ),
         ),
         ListTile(
           leading: Image.network(historyOfCoin.image!.thumb!),
@@ -240,7 +235,12 @@ class CoinComparisonList extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
-        Padding(padding: const EdgeInsets.all(8.0), child: findRatio()),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: findRatio(
+              coinComparison.currentResultCoin.copyWith(),
+              coinComparison.historyOfCoin.copyWith(),
+            )),
       ],
     );
   }
