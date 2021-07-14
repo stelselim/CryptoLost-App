@@ -104,7 +104,7 @@ class HistoryCoinWidget extends StatelessWidget {
                     coinModel: historyCalculation.coinModel,
                     currentDateTime: historyCalculation.currentDateTime,
                     isLoss: historyCalculation.isLoss,
-                    profit: historyCalculation.percentage,
+                    profit: historyCalculation.profit,
                     percentage: historyCalculation.percentage,
                     oldDateTime: historyCalculation.oldDateTime,
                   ));

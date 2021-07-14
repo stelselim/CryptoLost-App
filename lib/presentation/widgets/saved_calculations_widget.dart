@@ -8,18 +8,14 @@ import 'package:intl/intl.dart';
 
 class SavedCalculationWidget extends StatelessWidget {
   final PorfolioCalculation? localcalculation;
-  final Function(void Function())? setState;
-  final BuildContext? context;
-  final int? index;
+  final void Function()? onDelete;
 
   static final SlidableController slidableController = SlidableController();
 
   const SavedCalculationWidget({
     Key? key,
-    this.context,
     this.localcalculation,
-    this.setState,
-    this.index,
+    this.onDelete,
   }) : super(key: key);
 
   static const trailingTextStyle = TextStyle(
@@ -27,17 +23,6 @@ class SavedCalculationWidget extends StatelessWidget {
     fontSize: 18,
     color: Colors.red,
   );
-
-  Future<void> delete() async {
-    try {
-      const snackBar = SnackBar(content: Text('Calculation deleted!'));
-      ScaffoldMessenger.of(context!).showSnackBar(snackBar);
-      await deletePortfolioCalculations(index!);
-      setState!(() {});
-    } catch (e) {
-      print(e);
-    }
-  }
 
   Future<void> share() async {
     try {
@@ -91,7 +76,7 @@ class SavedCalculationWidget extends StatelessWidget {
           caption: 'Delete',
           color: Colors.red,
           icon: Icons.delete,
-          onTap: () => delete(),
+          onTap: onDelete,
         ),
       ],
     );

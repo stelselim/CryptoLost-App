@@ -33,7 +33,9 @@ class TotalCalculations extends StatelessWidget {
             alignment: Alignment.center,
             width: MediaQuery.of(context).size.width * 0.6,
             child: Text(
-              totalMoney > 0 ? "Total Profit: $total" : "Total Loss: $total",
+              totalMoney > 0
+                  ? "Total Profit: \$$total"
+                  : "Total Loss: \$$total",
               textScaleFactor: 2.0,
               textAlign: TextAlign.center,
               style: TextStyle(

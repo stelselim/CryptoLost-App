@@ -109,6 +109,10 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       children: [
                         // Create New
                         ElevatedButton(
+                          style: const ButtonStyle().copyWith(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.green),
+                          ),
                           onPressed: () async {
                             final progressCreateDialog = Dialog(
                               child: Container(
@@ -137,11 +141,15 @@ class _ProgressScreenState extends State<ProgressScreen> {
                         ),
                         // Delete New
                         ElevatedButton(
+                          style: const ButtonStyle().copyWith(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.redAccent),
+                          ),
                           onPressed: () async {
                             final AlertDialog alert = AlertDialog(
-                              title: const Text("Delete All Calculations"),
+                              title: const Text("Delete All Money Ladders"),
                               content:
-                                  const Text("Calculations can not recovered."),
+                                  const Text("Ladders can not be recovered."),
                               actions: [
                                 TextButton(
                                   onPressed: () {

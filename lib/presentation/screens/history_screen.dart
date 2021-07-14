@@ -48,9 +48,9 @@ class CalculationHistoryScreen extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: () async {
                             final AlertDialog alert = AlertDialog(
-                              title: const Text("Delete All Calculations"),
-                              content:
-                                  const Text("Calculations can not recovered."),
+                              title: const Text("Delete Calculation History"),
+                              content: const Text(
+                                  "Calculations can not be recovered."),
                               actions: [
                                 TextButton(
                                   onPressed: () {

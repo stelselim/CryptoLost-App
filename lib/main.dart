@@ -1,6 +1,7 @@
 import 'package:cryptolostapp/application/provider/appstate.dart';
 import 'package:cryptolostapp/presentation/app_widget.dart';
 import 'package:cryptolostapp/presentation/screens/history_screen.dart';
+import 'package:cryptolostapp/presentation/screens/progress_detail_screen.dart';
 import 'package:cryptolostapp/utility/admob/admob_initialize.dart';
 import 'package:cryptolostapp/utility/analytics/google_anayltics_functions.dart';
 import 'package:cryptolostapp/utility/routes/routes.dart';
@@ -51,6 +52,8 @@ class App extends StatelessWidget {
                   homeRoute: (context) => const AppWidget(),
                   coinCalculationHistoryRoute: (context) =>
                       const CalculationHistoryScreen(),
+                  progressDetailsRoute: (context) =>
+                      const ProgressDetailScreen(),
                 },
               ),
             );
