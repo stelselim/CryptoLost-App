@@ -1,4 +1,4 @@
-import 'package:cryptolostapp/application/models/coin.dart';
+import 'package:cryptolostapp/application/models/coin_model.dart';
 import 'package:cryptolostapp/presentation/widgets/dialog/coins_detail_dialog.dart';
 import 'package:cryptolostapp/utility/analytics/google_anayltics_functions.dart';
 import 'package:flutter/material.dart';

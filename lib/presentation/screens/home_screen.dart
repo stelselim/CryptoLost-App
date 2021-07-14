@@ -1,8 +1,8 @@
 import 'package:cryptolostapp/application/classes/coin_comparison_class.dart';
-import 'package:cryptolostapp/application/models/coin.dart';
+import 'package:cryptolostapp/application/models/coin_model.dart';
 import 'package:cryptolostapp/application/provider/appstate.dart';
 import 'package:cryptolostapp/infrastructure/calculation/coin_calculation_history.dart';
-import 'package:cryptolostapp/infrastructure/coin_data/coins.dart';
+import 'package:cryptolostapp/infrastructure/coin_data/coin_data_repository.dart';
 import 'package:cryptolostapp/presentation/styles/text_styles.dart';
 import 'package:cryptolostapp/presentation/widgets/coin_comparison.dart';
 import 'package:cryptolostapp/presentation/widgets/coins_dropdown_item.dart';
@@ -114,6 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
           selectedCoin!.copyWith(),
           coinResultLocal!.copyWith(),
           selectedDate!,
+          amountTextToDouble(amountTextController.text),
         );
         // Save To History
         await CoinCalculationHistoryRepository()

@@ -1,10 +1,11 @@
-import 'package:cryptolostapp/application/models/coin.dart';
+import 'package:cryptolostapp/application/models/coin_model.dart';
 import 'package:cryptolostapp/application/models/portfolio_calculations.dart';
 
 PorfolioCalculation coinModelsToPortfolioCalculation(
   CoinModel currentCoin,
   CoinModel historyOfCoin,
   DateTime historyDate,
+  num amount,
 ) {
   final _history = historyOfCoin.market_data!.current_price!["usd"]!;
   final _current = currentCoin.market_data!.current_price!["usd"]!;
@@ -15,7 +16,7 @@ PorfolioCalculation coinModelsToPortfolioCalculation(
     currentDateTime: DateTime.now(),
     oldDateTime: historyDate,
     isLoss: _history > _current,
-    profit: (_history - _current).abs(),
+    profit: amount * (_history - _current).abs(),
     percentage: _ratio.abs(),
   );
 }

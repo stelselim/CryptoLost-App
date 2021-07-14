@@ -22,6 +22,28 @@ Future homeScreenEvent() async {
   }
 }
 
+Future historyScreenEvent() async {
+  try {
+    final FirebaseAnalytics analytics = FirebaseAnalytics();
+    await analytics.logEvent(
+      name: events.HISTORYSCREEN_OPENED_EVENT,
+    );
+  } catch (e) {
+    print(e);
+  }
+}
+
+Future progressScreenEvent() async {
+  try {
+    final FirebaseAnalytics analytics = FirebaseAnalytics();
+    await analytics.logEvent(
+      name: events.PROGRESSSCREEN_OPENED_EVENT,
+    );
+  } catch (e) {
+    print(e);
+  }
+}
+
 Future coinsScreenEvent() async {
   try {
     final FirebaseAnalytics analytics = FirebaseAnalytics();

@@ -4,8 +4,8 @@ import 'package:cryptolostapp/presentation/widgets/total_calculations_widget.dar
 import 'package:cryptolostapp/infrastructure/calculation/save_calculation.dart';
 import 'package:flutter/material.dart';
 
-class PortfolioScreen extends StatelessWidget {
-  const PortfolioScreen({Key? key}) : super(key: key);
+class SavedScreen extends StatelessWidget {
+  const SavedScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

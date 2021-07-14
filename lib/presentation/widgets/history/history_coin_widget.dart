@@ -1,4 +1,4 @@
-import 'package:cryptolostapp/application/models/coin.dart';
+import 'package:cryptolostapp/application/models/coin_model.dart';
 import 'package:cryptolostapp/application/models/history_calculations.dart';
 import 'package:cryptolostapp/application/models/portfolio_calculations.dart';
 import 'package:cryptolostapp/infrastructure/calculation/save_calculation.dart';
@@ -114,7 +114,7 @@ class HistoryCoinWidget extends StatelessWidget {
                   print(e);
                 }
               },
-              child: const Text("Save To Portfolio"),
+              child: const Text("Save Calculation"),
             ),
             TextButton(
               onPressed: deleteHistoryCalculation,
@@ -166,14 +166,14 @@ class HistoryCoinWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Price: ${historyCalculation.coinModel.market_data!.current_price!['usd']!.toStringAsFixed(2)} \$",
+                        "Coin Price: ${historyCalculation.coinModel.market_data!.current_price!['usd']!.toStringAsFixed(2)} \$",
                         textScaleFactor: dateScaleFactor,
                       ),
                       const SizedBox(
                         height: 3,
                       ),
                       Text(
-                        "Price: ${historyCalculation.oldCoinModel.market_data!.current_price!['usd']!.toStringAsFixed(2)} \$",
+                        "Coin Price: ${historyCalculation.oldCoinModel.market_data!.current_price!['usd']!.toStringAsFixed(2)} \$",
                         textScaleFactor: dateScaleFactor,
                       ),
                     ],
@@ -191,8 +191,16 @@ class HistoryCoinWidget extends StatelessWidget {
                     height: MediaQuery.of(context).size.height * 0.07,
                   ),
                   Text(
-                      "${historyCalculation.coinModel.name!} (${historyCalculation.coinModel.symbol!.toUpperCase()})"),
-                  Text(historyCalculation.coinModel.name!),
+                    "${historyCalculation.coinModel.name!} (${historyCalculation.coinModel.symbol!.toUpperCase()})",
+                    textScaleFactor: 1.25,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(right: 5.0),
+                    child: Icon(
+                      Icons.edit,
+                      color: Colors.blueGrey,
+                    ),
+                  ),
                 ],
               ),
             ),

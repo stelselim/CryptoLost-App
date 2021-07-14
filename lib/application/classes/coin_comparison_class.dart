@@ -1,5 +1,6 @@
-import 'package:cryptolostapp/application/models/coin.dart';
+import 'package:cryptolostapp/application/models/coin_model.dart';
 
+// For Coin Comparison List Widget
 class CoinComparisonClass {
   CoinModel historyOfCoin; // Resulted Value
   CoinModel currentResultCoin; // Resulted Value

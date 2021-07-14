@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:cryptolostapp/application/models/coin.dart';
+import 'package:cryptolostapp/application/models/coin_model.dart';
 import 'package:cryptolostapp/domains/coindata_domain.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';

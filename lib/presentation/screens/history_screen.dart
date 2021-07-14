@@ -1,6 +1,7 @@
 import 'package:cryptolostapp/application/models/history_calculations.dart';
 import 'package:cryptolostapp/infrastructure/calculation/coin_calculation_history.dart';
 import 'package:cryptolostapp/presentation/widgets/history/history_coin_widget.dart';
+import 'package:cryptolostapp/utility/analytics/google_anayltics_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -27,7 +28,8 @@ class CalculationHistoryScreen extends StatelessWidget {
             if (snapshot.hasError) {
               return const Center(child: Text("An Error Occured"));
             }
-
+            // History Screen Event
+            historyScreenEvent();
             return RefreshIndicator(
               onRefresh: () async {
                 await Future.delayed(const Duration(milliseconds: 200));

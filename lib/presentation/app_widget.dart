@@ -3,24 +3,47 @@ import 'dart:io';
 import 'package:cryptolostapp/application/provider/appstate.dart';
 import 'package:cryptolostapp/presentation/screens/coins_screen.dart';
 import 'package:cryptolostapp/presentation/screens/home_screen.dart';
-import 'package:cryptolostapp/presentation/screens/portfolio_screen.dart';
+import 'package:cryptolostapp/presentation/screens/progress_screen.dart';
+import 'package:cryptolostapp/presentation/screens/saved_screen.dart';
 
 import 'package:cryptolostapp/utility/analytics/google_anayltics_functions.dart';
 import 'package:cryptolostapp/utility/routes/routes.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({Key? key}) : super(key: key);
 
-  static PreferredSizeWidget appBarWidget(BuildContext context) {
-    const title = Text("Loss & Gain Calculator");
+  static PreferredSizeWidget appBarWidget(BuildContext context, int index) {
+    String title = "";
+
+    switch (index) {
+      case 0:
+        title = "Loss & Gain Calculator";
+        break;
+      case 1:
+        title = "Coins";
+        break;
+      case 2:
+        title = "Money Ladder"; // Progress Screen Special Name
+        break;
+      case 3:
+        title = "Saved Calculations";
+        break;
+      default:
+        title = "Loss & Gain Calculator";
+        break;
+    }
 
     final drawerButton = IconButton(
       onPressed: () {
-        print("Hey");
+        Fluttertoast.showToast(
+          msg: "New Features Coming Soon!",
+          gravity: ToastGravity.CENTER,
+        );
       },
       icon: const Icon(Icons.menu),
     );
@@ -34,7 +57,7 @@ class AppWidget extends StatelessWidget {
 
     if (Platform.isAndroid) {
       return AppBar(
-        title: title,
+        title: Text(title),
         centerTitle: true,
         leading: drawerButton,
         actions: [
@@ -43,7 +66,7 @@ class AppWidget extends StatelessWidget {
       );
     } else {
       return CupertinoNavigationBar(
-        middle: title,
+        middle: Text(title),
         leading: drawerButton,
         trailing: Wrap(
           children: [
@@ -59,16 +82,20 @@ class AppWidget extends StatelessWidget {
     return Consumer<AppState>(
       builder: (context, appstate, _) => Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: appBarWidget(context),
+        appBar: appBarWidget(context, appstate.index),
         body: IndexedStack(
           index: appstate.index,
           children: const [
             HomeScreen(),
             CoinsScreen(),
-            PortfolioScreen(),
+            ProgressScreen(),
+            SavedScreen(),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: Colors.black,
+          unselectedItemColor: Colors.black45,
+          showUnselectedLabels: true,
           currentIndex: appstate.index,
           onTap: (val) {
             if (val == 0) {
@@ -76,6 +103,8 @@ class AppWidget extends StatelessWidget {
             } else if (val == 1) {
               coinsScreenEvent();
             } else if (val == 2) {
+              progressScreenEvent();
+            } else if (val == 3) {
               savedScreenEvent();
             }
             Provider.of<AppState>(context, listen: false).updateIndex(val);
@@ -90,7 +119,11 @@ class AppWidget extends StatelessWidget {
               icon: Icon(Icons.list_alt),
             ),
             BottomNavigationBarItem(
-              label: "Portfolio",
+              label: "Money Ladder",
+              icon: Icon(Icons.auto_graph_sharp),
+            ),
+            BottomNavigationBarItem(
+              label: "Saved",
               icon: Icon(Icons.bar_chart),
             ),
           ],

@@ -1,8 +1,8 @@
-import 'package:cryptolostapp/application/models/coin.dart';
+import 'package:cryptolostapp/application/models/coin_model.dart';
 import 'package:flutter/foundation.dart';
 
 class AppState extends ChangeNotifier {
-  int index = 0;
+  int index = 0; // BottomBar Index
   List<CoinModel>? coins; // Coins from API
   List<CoinModel> selectedDateCoins = []; // Coins at Selected Date;
 

@@ -1,14 +1,14 @@
 import "dart:convert";
 import 'package:cryptolostapp/application/models/portfolio_calculations.dart';
-import "package:cryptolostapp/application/models/coin.dart";
+import 'package:cryptolostapp/application/models/coin_model.dart';
 import "package:shared_preferences/shared_preferences.dart";
 
-const calculationKey = "CALCULATIONS";
+const calculationSharedPreferencesKey = "CALCULATIONS";
 
 Future<List<PorfolioCalculation>> getPortfolioCalculations() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  final local = prefs.getString(calculationKey);
+  final local = prefs.getString(calculationSharedPreferencesKey);
   if (local == null) return [];
   final List<dynamic> tempList = jsonDecode(local) as List<dynamic>;
 
@@ -30,19 +30,21 @@ Future<void> saveNewPortfolioCalculations(
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final calculations = await getPortfolioCalculations();
   calculations.add(calculationValue);
-  await prefs.setString(calculationKey, jsonEncode(calculations));
+  await prefs.setString(
+      calculationSharedPreferencesKey, jsonEncode(calculations));
 }
 
 Future<void> deletePortfolioCalculations(int index) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final calculations = await getPortfolioCalculations();
   calculations.removeAt(index);
-  await prefs.setString(calculationKey, jsonEncode(calculations));
+  await prefs.setString(
+      calculationSharedPreferencesKey, jsonEncode(calculations));
 }
 
 Future<void> clearPortfolioCalculations() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.remove(calculationKey);
+  await prefs.remove(calculationSharedPreferencesKey);
 }
 
 Future<List<PorfolioCalculation>> updateCalculationsFromOld(
@@ -67,6 +69,7 @@ Future<List<PorfolioCalculation>> updateCalculationsFromOld(
     }
   }
 
-  await prefs.setString(calculationKey, jsonEncode(calculationList));
+  await prefs.setString(
+      calculationSharedPreferencesKey, jsonEncode(calculationList));
   return calculationList;
 }

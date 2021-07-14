@@ -1,6 +1,6 @@
 import 'package:cryptolostapp/application/classes/coin_comparison_class.dart';
 import 'package:cryptolostapp/application/models/portfolio_calculations.dart';
-import 'package:cryptolostapp/application/models/coin.dart';
+import 'package:cryptolostapp/application/models/coin_model.dart';
 import 'package:cryptolostapp/infrastructure/calculation/save_calculation.dart';
 import 'package:cryptolostapp/utility/coin_models_to_portfolio_calculation.dart';
 import 'package:cryptolostapp/utility/share_calculation.dart';
@@ -91,16 +91,18 @@ class CoinComparisonList extends StatelessWidget {
     }
   }
 
-  Future saveTheCalculations() async {
-    final CoinModel currentCoin = coinComparison.currentResultCoin.copyWith();
-    final CoinModel historyOfCoin = coinComparison.historyOfCoin.copyWith();
-    final DateTime historyDate = coinComparison.historyOfDate;
-
+  Future saveTheCalculations(
+    CoinModel currentCoin,
+    CoinModel historyOfCoin,
+    DateTime historyDate,
+    num amount,
+  ) async {
     try {
       final portfolioCalculation = coinModelsToPortfolioCalculation(
         currentCoin,
         historyOfCoin,
         historyDate,
+        amount,
       );
       await saveNewPortfolioCalculations(portfolioCalculation);
       await savedCalculationEvent();
@@ -166,7 +168,12 @@ class CoinComparisonList extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: ElevatedButton(
-                onPressed: () => saveTheCalculations(),
+                onPressed: () => saveTheCalculations(
+                  currentCoin,
+                  historyOfCoin,
+                  historyDate,
+                  coinAmount,
+                ),
                 child: const Text(
                   "Save This!",
                   textScaleFactor: 1.25,

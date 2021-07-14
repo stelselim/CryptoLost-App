@@ -1,4 +1,4 @@
-import 'package:cryptolostapp/application/models/coin.dart';
+import 'package:cryptolostapp/application/models/coin_model.dart';
 import 'package:flutter/material.dart';
 
 List<DropdownMenuItem<CoinModel>>? coinsDropDown(List<CoinModel>? coinModels) {

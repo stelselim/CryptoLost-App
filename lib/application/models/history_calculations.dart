@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:cryptolostapp/application/models/coin.dart';
+import 'package:cryptolostapp/application/models/coin_model.dart';
 
 class HistoryCalculation {
   CoinModel coinModel;

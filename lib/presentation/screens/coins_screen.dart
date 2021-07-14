@@ -1,5 +1,5 @@
 import 'package:cryptolostapp/application/provider/appstate.dart';
-import 'package:cryptolostapp/infrastructure/coin_data/coins.dart';
+import 'package:cryptolostapp/infrastructure/coin_data/coin_data_repository.dart';
 import 'package:cryptolostapp/presentation/widgets/coins_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
