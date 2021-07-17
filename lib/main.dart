@@ -52,8 +52,9 @@ class App extends StatelessWidget {
                   homeRoute: (context) => const AppWidget(),
                   coinCalculationHistoryRoute: (context) =>
                       const CalculationHistoryScreen(),
-                  progressDetailsRoute: (context) =>
-                      const ProgressDetailScreen(),
+                  progressDetailsRoute: (context) => const ProgressDetailScreen(
+                        progressModelId: "",
+                      ),
                 },
               ),
             );

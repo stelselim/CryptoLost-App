@@ -59,7 +59,10 @@ class ProgressRepository extends ProgressDomain {
     final progresses = await getProgressList();
     final element = progresses.firstWhere((element) => element.id == model.id);
     progresses.indexOf(element);
-    progresses[progresses.indexOf(element)] = model;
+
+    progresses[progresses.indexOf(element)] = model.copyWith(
+      lastUpdated: DateTime.now(),
+    );
 
     await prefs.setString(progressSharedPreferencesKey, jsonEncode(progresses));
   }

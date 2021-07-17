@@ -44,6 +44,17 @@ Future progressScreenEvent() async {
   }
 }
 
+Future progressDetailedPScreenEvent() async {
+  try {
+    final FirebaseAnalytics analytics = FirebaseAnalytics();
+    await analytics.logEvent(
+      name: events.PROGRESS_DETAILED_SCREEN_OPENED_EVENT,
+    );
+  } catch (e) {
+    print(e);
+  }
+}
+
 Future coinsScreenEvent() async {
   try {
     final FirebaseAnalytics analytics = FirebaseAnalytics();
@@ -82,6 +93,28 @@ Future calculateEvent() async {
     final FirebaseAnalytics analytics = FirebaseAnalytics();
     await analytics.logEvent(
       name: events.CRYPTO_CALCULATION_EVENT,
+    );
+  } catch (e) {
+    print(e);
+  }
+}
+
+Future createProgressEvent() async {
+  try {
+    final FirebaseAnalytics analytics = FirebaseAnalytics();
+    await analytics.logEvent(
+      name: events.PROGRESS_CREATED_EVENT,
+    );
+  } catch (e) {
+    print(e);
+  }
+}
+
+Future updateProgressEvent() async {
+  try {
+    final FirebaseAnalytics analytics = FirebaseAnalytics();
+    await analytics.logEvent(
+      name: events.PROGRESS_UPDATED_EVENT,
     );
   } catch (e) {
     print(e);

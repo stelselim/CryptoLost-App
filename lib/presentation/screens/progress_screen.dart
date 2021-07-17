@@ -1,6 +1,7 @@
 import 'package:cryptolostapp/application/models/progress_model.dart';
 import 'package:cryptolostapp/application/provider/appstate.dart';
 import 'package:cryptolostapp/infrastructure/progress/progress_repository.dart';
+import 'package:cryptolostapp/presentation/styles/text_styles.dart';
 import 'package:cryptolostapp/presentation/widgets/progress/progress_create_form.dart';
 import 'package:cryptolostapp/presentation/widgets/progress/progress_list_tile.dart';
 import 'package:cryptolostapp/utility/screensizes.dart';
@@ -59,13 +60,31 @@ class _ProgressScreenState extends State<ProgressScreen> {
         }
         // No Data
         if (snapshot.data!.isEmpty) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                child: ProgressCreateForm(onCreate: onCreate),
-              ),
-            ],
+          return SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: getSize(context).height * 0.05,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Text(
+                    "Create a Money Ladder!",
+                    style: headertextStyle,
+                    textScaleFactor: 1.55,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                SizedBox(
+                  height: getSize(context).height * 0.01,
+                ),
+                Center(
+                  child: ProgressCreateForm(onCreate: onCreate),
+                ),
+              ],
+            ),
           );
         }
         // Has Error
@@ -118,15 +137,18 @@ class _ProgressScreenState extends State<ProgressScreen> {
                               child: Container(
                                 padding: const EdgeInsets.all(10),
                                 height: getSize(context).height * 0.55,
-                                child: ProgressCreateForm(
-                                  onCreate: (model) {
-                                    onCreate(model);
-                                    Navigator.pop(context);
-                                    Fluttertoast.showToast(
-                                      msg: "New Money Ladder Created!",
-                                      gravity: ToastGravity.CENTER,
-                                    );
-                                  },
+                                child: SingleChildScrollView(
+                                  physics: const ClampingScrollPhysics(),
+                                  child: ProgressCreateForm(
+                                    onCreate: (model) {
+                                      onCreate(model);
+                                      Navigator.pop(context);
+                                      Fluttertoast.showToast(
+                                        msg: "New Money Ladder Created!",
+                                        gravity: ToastGravity.CENTER,
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                             );

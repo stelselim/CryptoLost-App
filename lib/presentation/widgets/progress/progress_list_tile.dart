@@ -1,7 +1,7 @@
 import 'package:cryptolostapp/application/models/progress_model.dart';
+import 'package:cryptolostapp/presentation/screens/progress_detail_screen.dart';
 import 'package:cryptolostapp/utility/currency_formatter.dart';
 import 'package:cryptolostapp/utility/date_formatter.dart';
-import 'package:cryptolostapp/utility/routes/routes.dart';
 import 'package:flutter/material.dart';
 
 class ProgressListTile extends StatelessWidget {
@@ -35,7 +35,13 @@ class ProgressListTile extends StatelessWidget {
       ),
       child: Card(
         child: TextButton(
-          onPressed: () => Navigator.pushNamed(context, progressDetailsRoute),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  ProgressDetailScreen(progressModelId: progressModel.id),
+            ),
+          ),
           child: Container(
             height: 250,
             padding: const EdgeInsets.all(10),
@@ -136,7 +142,7 @@ class ProgressListTile extends StatelessWidget {
                   height: 15,
                 ),
                 Text(
-                  "STAIR ${progressModel.currentStepIndex + 1}",
+                  "STAIR ${progressModel.currentStepIndex + 1} / ${progressModel.steps.length}",
                   textScaleFactor: 1.12,
                   style: smallTextStyle.copyWith(
                     fontWeight: FontWeight.w600,

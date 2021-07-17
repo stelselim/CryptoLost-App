@@ -14,6 +14,8 @@ List<num> calculateMoneySteps(
 
   for (int i = 0; i < days; i++) {
     currentStepMoney = currentStepMoney + (currentStepMoney * percentage / 100);
+    currentStepMoney =
+        (currentStepMoney * 100).round() / 100; // 2 number after ,
     moneySteps.add(currentStepMoney);
   }
   return moneySteps;
@@ -32,7 +34,7 @@ ProgressModel createProgressModelFromUserInput(
   );
   return ProgressModel(
     id: Random().nextInt(100000000).toString(),
-    name: "Progress Name",
+    name: "Money Ladder",
     initialMoney: initialMoney,
     currency: currency,
     percentage: percentage,
