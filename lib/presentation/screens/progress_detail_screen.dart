@@ -5,6 +5,7 @@ import 'package:cryptolostapp/presentation/widgets/dialog/delete_dialog.dart';
 import 'package:cryptolostapp/utility/analytics/google_anayltics_functions.dart';
 import 'package:cryptolostapp/utility/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
@@ -33,6 +34,19 @@ class _ProgressDetailScreenState extends State<ProgressDetailScreen> {
     }
   }
 
+  List<ProgressJourneyStops> updateToProgressJourney({
+    required int index,
+    required ProgressModel progressModel,
+  }) {
+    final journey = progressModel.journeyDates;
+    journey.add(ProgressJourneyStops(
+      dateTime: DateTime.now(),
+      stepIndex: index,
+      money: progressModel.steps[index],
+    ));
+    return journey;
+  }
+
   Future<void> onUpdate({
     required bool? value,
     required int index,
@@ -44,12 +58,16 @@ class _ProgressDetailScreenState extends State<ProgressDetailScreen> {
       if (value != null && value) {
         await progressRepository.updateProgress(progressModel.copyWith(
           currentStepIndex: index,
+          journeyDates: updateToProgressJourney(
+              index: index, progressModel: progressModel),
         ));
         setState(() {});
       } else {
         if (index == 0) return;
         await progressRepository.updateProgress(progressModel.copyWith(
           currentStepIndex: index - 1,
+          journeyDates: updateToProgressJourney(
+              index: index, progressModel: progressModel),
         ));
         setState(() {});
       }
@@ -173,8 +191,16 @@ class _ProgressDetailScreenState extends State<ProgressDetailScreen> {
                 itemCount: progressModel!.steps.length,
                 itemBuilder: (context, index) {
                   final currentIndex = progressModel.currentStepIndex;
+                  const lineThroughStyle = TextStyle(
+                    decorationThickness: 2.0,
+                    decorationStyle: TextDecorationStyle.solid,
+                    decoration: TextDecoration.lineThrough,
+                  );
                   return ListTile(
-                    leading: Text("Day ${(index + 1).toString()}"),
+                    leading: Text(
+                      "Day ${(index + 1).toString()}",
+                      style: currentIndex >= index ? lineThroughStyle : null,
+                    ),
                     trailing: Checkbox(
                       onChanged: (bool? value) => onUpdate(
                         index: index,
@@ -186,6 +212,7 @@ class _ProgressDetailScreenState extends State<ProgressDetailScreen> {
                     title: Text(
                       "Reach ${progressModel.steps[index].toString()}  ${progressModel.currency.toString()}",
                       textAlign: TextAlign.center,
+                      style: currentIndex >= index ? lineThroughStyle : null,
                     ),
                   );
                 },
