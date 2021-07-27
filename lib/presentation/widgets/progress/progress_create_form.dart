@@ -157,7 +157,7 @@ class ProgressCreateForm extends StatelessWidget {
                   ),
                 ],
                 // inputBorder: InputBorder.none,
-                textInputType: TextInputType.number,
+                textInputType: TextInputType.text,
               ),
               spaceBox,
               TextButton(

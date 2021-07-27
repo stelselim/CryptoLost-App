@@ -183,184 +183,183 @@ class _HomeScreenState extends State<HomeScreen> {
     return Consumer<AppState>(
       builder: (context, appstate, _) => GestureDetector(
         onTap: () => amountNode.unfocus(), // Unfocus Keyboard
-        child: Column(
-          children: [
-            // Text
-            Padding(
-              padding: const EdgeInsets.only(top: 23.0, left: 18),
-              child: Wrap(
-                children: [
-                  Text(
-                    "Enter your cripto from PAST, and compare CURRENT value!",
-                    style: headertextStyle,
-                  ),
-                ],
-              ),
-            ),
-            // INPUT Loading
-            if (appstate.coins == null)
-              const Padding(
-                padding: EdgeInsets.all(25.0),
-                child: CircularProgressIndicator(),
-              )
-            // COINS Loaded
-            else
-              Expanded(
-                flex: 3,
-                child: Container(
-                  margin: EdgeInsets.symmetric(
-                    vertical: getSize(context).height * 0.025,
-                    horizontal: getSize(context).width * 0.15,
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blueGrey, width: 1.5),
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    vertical: getSize(context).height * 0.014,
-                    horizontal: getSize(context).width * 0.06,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Dropdown
-                      Expanded(
-                        flex: 3,
-                        child: DropdownButton<CoinModel>(
-                          key: coinDropDownKey,
-                          hint: const Text("Select"),
-                          underline: Container(),
-                          onChanged: (val) => setState(() {
-                            selectedCoin = val;
-                          }),
-                          value: selectedCoin,
-                          items: coinsDropDown(appstate.coins),
-                        ),
-                      ),
-                      // TextField
-                      Expanded(
-                        flex: 3,
-                        child: TextField(
-                          key: textFieldKey,
-                          controller: amountTextController,
-                          focusNode: amountNode,
-                          keyboardType: TextInputType.text,
-                          onEditingComplete: () => amountNode.unfocus(),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                              RegExp("[0-9.,]"),
-                            ),
-                          ],
-                          textAlign: TextAlign.center,
-                          textInputAction: TextInputAction.done,
-                          decoration: const InputDecoration(
-                            hintText: "Amount",
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-            // Date Select
-            Expanded(
-              flex: 2,
-              child: selectedDate != null
-                  ? ListTile(
-                      leading: IconButton(
-                        icon: const Icon(
-                          Icons.edit,
-                          size: 35,
-                        ),
-                        onPressed: () async {
-                          try {
-                            selectedDate = await pickDate(context);
-                            setState(() {});
-                          } catch (e) {
-                            print(e);
-                          }
-                        },
-                      ),
-                      trailing: IconButton(
-                        icon: const Icon(
-                          Icons.delete,
-                          size: 35,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            selectedDate = null;
-                          });
-                        },
-                      ),
-                      title: TextButton(
-                        onPressed: () async {
-                          try {
-                            selectedDate = await pickDate(context);
-                            setState(() {});
-                          } catch (e) {
-                            print(e);
-                          }
-                        },
-                        child: Text(
-                          DateFormat('MM-dd-yyyy').format(selectedDate!),
-                          textScaleFactor: 1.25,
-                          style: TextStyle(
-                            color: Colors.blueGrey.shade600,
-                            fontWeight: FontWeight.w700,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    )
-                  : CupertinoButton(
-                      key: dateSelectButtonKey,
-                      onPressed: () async {
-                        try {
-                          selectedDate = await pickDate(context);
-
-                          setState(() {});
-                        } catch (e) {
-                          print(e);
-                        }
-                      },
-                      child: const Text("Select Date"),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // Text
+              Padding(
+                padding: const EdgeInsets.only(top: 23.0, left: 18),
+                child: Wrap(
+                  children: [
+                    Text(
+                      "Enter your cripto from PAST, and compare CURRENT value!",
+                      style: headertextStyle,
                     ),
-            ),
-            // Space
-
-            const SizedBox(
-              height: 10,
-            ),
-            // Calculate Button
-            Expanded(
-              flex: 2,
-              child: ElevatedButton(
-                key: calculateButtonKey,
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.green),
+                  ],
                 ),
-                onPressed: calculateButtonPressed,
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text(
-                    "Calculate",
-                    textScaleFactor: 1.25,
+              ),
+              // INPUT Loading
+              if (appstate.coins == null)
+                const Padding(
+                  padding: EdgeInsets.all(25.0),
+                  child: CircularProgressIndicator(),
+                )
+              // COINS Loaded
+              else
+                SizedBox(
+                  height: getSize(context).height * 0.125,
+                  child: Container(
+                    margin: EdgeInsets.symmetric(
+                      vertical: getSize(context).height * 0.025,
+                      horizontal: getSize(context).width * 0.15,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.blueGrey, width: 1.5),
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      vertical: getSize(context).height * 0.014,
+                      horizontal: getSize(context).width * 0.06,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Dropdown
+                        Expanded(
+                          flex: 3,
+                          child: DropdownButton<CoinModel>(
+                            key: coinDropDownKey,
+                            hint: const Text("Select"),
+                            underline: Container(),
+                            onChanged: (val) => setState(() {
+                              selectedCoin = val;
+                            }),
+                            value: selectedCoin,
+                            items: coinsDropDown(appstate.coins),
+                          ),
+                        ),
+                        // TextField
+                        Expanded(
+                          flex: 3,
+                          child: TextField(
+                            key: textFieldKey,
+                            controller: amountTextController,
+                            focusNode: amountNode,
+                            keyboardType: TextInputType.text,
+                            onEditingComplete: () => amountNode.unfocus(),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp("[0-9.,]"),
+                              ),
+                            ],
+                            textAlign: TextAlign.center,
+                            textInputAction: TextInputAction.done,
+                            decoration: const InputDecoration(
+                              hintText: "Amount (\$)",
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+              // Date Select
+              SizedBox(
+                height: getSize(context).height * 0.085,
+                child: selectedDate != null
+                    ? ListTile(
+                        leading: IconButton(
+                          icon: const Icon(
+                            Icons.edit,
+                            size: 35,
+                          ),
+                          onPressed: () async {
+                            try {
+                              selectedDate = await pickDate(context);
+                              setState(() {});
+                            } catch (e) {
+                              print(e);
+                            }
+                          },
+                        ),
+                        trailing: IconButton(
+                          icon: const Icon(
+                            Icons.delete,
+                            size: 35,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              selectedDate = null;
+                            });
+                          },
+                        ),
+                        title: TextButton(
+                          onPressed: () async {
+                            try {
+                              selectedDate = await pickDate(context);
+                              setState(() {});
+                            } catch (e) {
+                              print(e);
+                            }
+                          },
+                          child: Text(
+                            DateFormat('MM-dd-yyyy').format(selectedDate!),
+                            textScaleFactor: 1.25,
+                            style: TextStyle(
+                              color: Colors.blueGrey.shade600,
+                              fontWeight: FontWeight.w700,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      )
+                    : CupertinoButton(
+                        key: dateSelectButtonKey,
+                        onPressed: () async {
+                          try {
+                            selectedDate = await pickDate(context);
+
+                            setState(() {});
+                          } catch (e) {
+                            print(e);
+                          }
+                        },
+                        child: const Text("Select Date"),
+                      ),
+              ),
+              // Space
+
+              const SizedBox(
+                height: 10,
+              ),
+              // Calculate Button
+              SizedBox(
+                height: getSize(context).height * 0.075,
+                child: ElevatedButton(
+                  key: calculateButtonKey,
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.green),
+                  ),
+                  onPressed: calculateButtonPressed,
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(
+                      "Calculate",
+                      textScaleFactor: 1.25,
+                    ),
                   ),
                 ),
               ),
-            ),
 
-            // Divider
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 4.0),
-              child: Divider(),
-            ),
+              // Divider
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 4.0),
+                child: Divider(),
+              ),
 
-            // Coin Comparison
-            Expanded(
-              flex: 10,
-              child: SingleChildScrollView(
+              // Coin Comparison
+              SingleChildScrollView(
                 physics: const ClampingScrollPhysics(),
                 child: Column(
                   children: [
@@ -381,9 +380,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

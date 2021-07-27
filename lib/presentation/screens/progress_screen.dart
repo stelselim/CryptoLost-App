@@ -136,7 +136,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                             final progressCreateDialog = Dialog(
                               child: Container(
                                 padding: const EdgeInsets.all(10),
-                                height: getSize(context).height * 0.55,
+                                height: getSize(context).height * 0.65,
                                 child: SingleChildScrollView(
                                   physics: const ClampingScrollPhysics(),
                                   child: ProgressCreateForm(

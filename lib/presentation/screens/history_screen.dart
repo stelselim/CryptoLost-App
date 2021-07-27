@@ -90,7 +90,9 @@ class CalculationHistoryScreen extends StatelessWidget {
                       shrinkWrap: true,
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
-                        final element = snapshot.data!.elementAt(index);
+                        final itemCount = snapshot.data!.length;
+                        final element =
+                            snapshot.data!.elementAt(itemCount - index - 1);
 
                         return HistoryCoinWidget(
                           historyCalculation: element,

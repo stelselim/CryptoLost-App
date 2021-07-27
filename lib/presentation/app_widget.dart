@@ -81,7 +81,6 @@ class AppWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AppState>(
       builder: (context, appstate, _) => Scaffold(
-        resizeToAvoidBottomInset: false,
         appBar: appBarWidget(context, appstate.index),
         body: IndexedStack(
           index: appstate.index,
